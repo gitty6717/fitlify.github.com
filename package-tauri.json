@@ -1,0 +1,42 @@
+{
+  "name": "fitlify",
+  "version": "2.3.0",
+  "description": "Fitlify - Your Personal Fitness Companion",
+  "main": "src-tauri/src/main.js",
+  "scripts": {
+    "tauri": "tauri",
+    "tauri:build": "tauri build",
+    "tauri:dev": "tauri dev",
+    "tauri:icon": "tauri icon"
+  },
+  "keywords": [
+    "fitness",
+    "workout",
+    "health",
+    "ai",
+    "planner"
+  ],
+  "author": {
+    "name": "Fitlify",
+    "email": "support@fitlify.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@tauri-apps/api": "^1.5.0",
+    "vue": "^3.3.0",
+    "vue-router": "^4.2.0",
+    "pinia": "^2.1.0",
+    "axios": "^1.6.0",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^1.5.0",
+    "@vitejs/plugin-vue": "^4.5.0",
+    "vite": "^5.0.0",
+    "typescript": "^5.2.0",
+    "@vue/tsconfig": "^0.4.0"
+  }
+}
