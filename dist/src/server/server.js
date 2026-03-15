@@ -3,49 +3,34 @@ const path = require('path');
 const fs = require('fs');
 const { exec } = require('child_process');
 const cors = require('cors');
+const SecureDatabaseManager = require('./secureDatabase');
 
 const app = express();
 const PORT = 3002;
+
+// Initialize secure database
+const db = new SecureDatabaseManager();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 
-// Database configuration
-const DB_PATH = path.join(__dirname, 'database', 'database.accdb');
-const DB_CONNECTION_STRING = `Provider=Microsoft.ACE.OLEDB.12.0;Data Source=${DB_PATH};Persist Security Info=False;`;
-
-// Initialize database if it doesn't exist
-function initializeDatabase() {
-    if (!fs.existsSync(DB_PATH)) {
-        console.log('Creating MS Access database...');
-        // Note: In a real deployment, you'd use proper Access DB creation tools
-        // For now, we'll create a simple JSON fallback
-        const fallbackDB = {
-            users: [
-                {
-                    id: 1,
-                    name: 'Demo User',
-                    email: 'demo@fitlify.com',
-                    password: 'demo123',
-                    phone: '',
-                    created_at: new Date().toISOString()
-                },
-                {
-                    id: 2,
-                    name: 'Test User',
-                    email: 'test@test.com',
-                    password: 'password',
-                    phone: '',
-                    created_at: new Date().toISOString()
-                }
-            ]
-        };
-        
-        fs.writeFileSync(path.join(__dirname, 'database', 'users.json'), JSON.stringify(fallbackDB, null, 2));
-        console.log('Fallback JSON database created');
+// JWT verification middleware
+function verifyToken(req, res, next) {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'No token provided' });
     }
+    
+    const decoded = db.verifyJWT(token);
+    if (!decoded) {
+        return res.status(401).json({ success: false, message: 'Invalid or expired token' });
+    }
+    
+    req.user = decoded;
+    next();
 }
 
 // Helper function to query database (using JSON fallback for now)
