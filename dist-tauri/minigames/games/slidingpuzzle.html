@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sliding Puzzle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0e1a;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-title {
+            font-size: 2rem;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-info {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-box {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .puzzle-container {
+            position: relative;
+            background: #141b2d;
+            padding: 15px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(4, 80px);
+            grid-template-rows: repeat(4, 80px);
+            gap: 5px;
+        }
+
+        .tile {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0a0e1a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .tile:hover:not(.empty) {
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .tile.empty {
+            background: transparent;
+            box-shadow: none;
+            cursor: default;
+        }
+
+        .tile.correct {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.5);
+        }
+
+        .controls {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #10b981;
+            color: #0a0e1a;
+        }
+
+        .btn-primary:hover {
+            background: #34d399;
+        }
+
+        .btn-secondary {
+            background: #1e2538;
+            color: #f8fafc;
+            border: 2px solid #334155;
+        }
+
+        .btn-secondary:hover {
+            border-color: #10b981;
+        }
+
+        .preview-btn {
+            background: rgba(255,255,255,0.1);
+            color: #f8fafc;
+            border: 2px dashed #475569;
+        }
+
+        .preview-overlay {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: calc(100% - 30px);
+            height: calc(100% - 30px);
+            background: rgba(10, 14, 26, 0.95);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .preview-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .preview-overlay h3 {
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 60px);
+            grid-template-rows: repeat(4, 60px);
+            gap: 3px;
+        }
+
+        .preview-tile {
+            background: #1e2538;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: #10b981;
+        }
+
+        .win-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 26, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .win-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .win-overlay h2 {
+            font-size: 2.5rem;
+            color: #10b981;
+            margin-bottom: 1rem;
+        }
+
+        .win-stats {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .puzzle-board {
+                grid-template-columns: repeat(4, 65px);
+                grid-template-rows: repeat(4, 65px);
+            }
+
+            .tile {
+                width: 65px;
+                height: 65px;
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <h1 class="game-title">🧩 Sliding Puzzle</h1>
+        <p style="color: #94a3b8; margin-bottom: 1rem;">Arrange tiles in order 1-15</p>
+        <div class="game-info">
+            <div class="info-box">
+                <div class="info-label">Time</div>
+                <div class="info-value" id="timer">00:00</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">Moves</div>
+                <div class="info-value" id="moves">0</div>
+            </div>
+            <div class="info-box">
+                <div class="info-label">Best</div>
+                <div class="info-value" id="best-time">--:--</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="puzzle-container">
+        <div class="puzzle-board" id="board"></div>
+        <div class="preview-overlay" id="preview">
+            <h3>Target Pattern</h3>
+            <div class="preview-grid" id="preview-grid"></div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-primary" onclick="shuffleBoard()">🔀 Shuffle</button>
+        <button class="preview-btn" onmousedown="showPreview()" onmouseup="hidePreview()" 
+                ontouchstart="showPreview()" ontouchend="hidePreview()">👁️ Hold to Preview</button>
+    </div>
+
+    <div class="win-overlay" id="win-overlay">
+        <h2>🎉 Complete!</h2>
+        <div class="win-stats">
+            <div>Time: <span id="win-time"></span></div>
+            <div>Moves: <span id="win-moves"></span></div>
+        </div>
+        <button class="btn-primary" onclick="shuffleBoard()">Play Again</button>
+    </div>
+
+    <script>
+        // Game State
+        let board = [];
+        let emptyPos = {r: 3, c: 3};
+        let moves = 0;
+        let startTime = null;
+        let timerInterval = null;
+        let gameActive = false;
+        let bestTime = localStorage.getItem('slidingpuzzle_best') || null;
+
+        // Target state (1-15 in order, 0 for empty)
+        const targetState = [
+            [1, 2, 3, 4],
+            [5, 6, 7, 8],
+            [9, 10, 11, 12],
+            [13, 14, 15, 0]
+        ];
+
+        function initGame() {
+            // Start with solved state
+            board = targetState.map(row => [...row]);
+            emptyPos = {r: 3, c: 3};
+            moves = 0;
+            gameActive = false;
+            
+            clearInterval(timerInterval);
+            updateDisplay();
+            render();
+            renderPreview();
+            
+            // Load best time
+            if (bestTime) {
+                const mins = Math.floor(bestTime / 60).toString().padStart(2, '0');
+                const secs = (bestTime % 60).toString().padStart(2, '0');
+                document.getElementById('best-time').textContent = `${mins}:${secs}`;
+            }
+        }
+
+        function render() {
+            const boardEl = document.getElementById('board');
+            boardEl.innerHTML = '';
+            
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 4; c++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'tile';
+                    
+                    if (board[r][c] === 0) {
+                        tile.classList.add('empty');
+                    } else {
+                        tile.textContent = board[r][c];
+                        // Highlight if in correct position
+                        if (board[r][c] === targetState[r][c]) {
+                            tile.classList.add('correct');
+                        }
+                        tile.onclick = () => moveTile(r, c);
+                    }
+                    
+                    boardEl.appendChild(tile);
+                }
+            }
+        }
+
+        function renderPreview() {
+            const previewEl = document.getElementById('preview-grid');
+            previewEl.innerHTML = '';
+            
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 4; c++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'preview-tile';
+                    tile.textContent = targetState[r][c] || '';
+                    previewEl.appendChild(tile);
+                }
+            }
+        }
+
+        function moveTile(r, c) {
+            if (!gameActive) return;
+            
+            // Check if adjacent to empty
+            const dr = Math.abs(r - emptyPos.r);
+            const dc = Math.abs(c - emptyPos.c);
+            
+            if ((dr === 1 && dc === 0) || (dr === 0 && dc === 1)) {
+                // Swap
+                board[emptyPos.r][emptyPos.c] = board[r][c];
+                board[r][c] = 0;
+                emptyPos = {r, c};
+                moves++;
+                
+                render();
+                updateDisplay();
+                
+                // Check win
+                if (checkWin()) {
+                    gameWon();
+                }
+            }
+        }
+
+        function checkWin() {
+            for (let r = 0; r < 4; r++) {
+                for (let c = 0; c < 4; c++) {
+                    if (board[r][c] !== targetState[r][c]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function shuffleBoard() {
+            // Reset to solved
+            board = targetState.map(row => [...row]);
+            emptyPos = {r: 3, c: 3};
+            moves = 0;
+            
+            // Perform random valid moves to shuffle
+            const shuffleMoves = 150;
+            let lastMove = null;
+            
+            for (let i = 0; i < shuffleMoves; i++) {
+                const validMoves = [];
+                const dirs = [[-1, 0], [1, 0], [0, -1], [0, 1]];
+                
+                for (const [dr, dc] of dirs) {
+                    const newR = emptyPos.r + dr;
+                    const newC = emptyPos.c + dc;
+                    
+                    if (newR >= 0 && newR < 4 && newC >= 0 && newC < 4) {
+                        // Don't undo immediately
+                        if (lastMove && lastMove.r === newR && lastMove.c === newC) {
+                            continue;
+                        }
+                        validMoves.push({r: newR, c: newC});
+                    }
+                }
+                
+                if (validMoves.length > 0) {
+                    const move = validMoves[Math.floor(Math.random() * validMoves.length)];
+                    
+                    board[emptyPos.r][emptyPos.c] = board[move.r][move.c];
+                    board[move.r][move.c] = 0;
+                    lastMove = {r: emptyPos.r, c: emptyPos.c};
+                    emptyPos = move;
+                }
+            }
+            
+            // Start game
+            gameActive = true;
+            startTime = Date.now();
+            moves = 0;
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+            
+            document.getElementById('win-overlay').classList.remove('show');
+            render();
+            updateDisplay();
+        }
+
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const mins = Math.floor(elapsed / 60).toString().padStart(2, '0');
+            const secs = (elapsed % 60).toString().padStart(2, '0');
+            document.getElementById('timer').textContent = `${mins}:${secs}`;
+        }
+
+        function updateDisplay() {
+            document.getElementById('moves').textContent = moves;
+        }
+
+        function gameWon() {
+            gameActive = false;
+            clearInterval(timerInterval);
+            
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            
+            // Update best time
+            if (!bestTime || elapsed < parseInt(bestTime)) {
+                bestTime = elapsed;
+                localStorage.setItem('slidingpuzzle_best', bestTime);
+            }
+            
+            // Show win overlay
+            const mins = Math.floor(elapsed / 60);
+            const secs = elapsed % 60;
+            document.getElementById('win-time').textContent = `${mins}m ${secs}s`;
+            document.getElementById('win-moves').textContent = moves;
+            document.getElementById('win-overlay').classList.add('show');
+            
+            // Submit score
+            if (window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'gameScore',
+                    gameId: 'slidingPuzzle',
+                    score: elapsed * 1000,
+                    duration: elapsed * 1000,
+                    moves: moves
+                }, '*');
+            }
+        }
+
+        function showPreview() {
+            document.getElementById('preview').classList.add('show');
+        }
+
+        function hidePreview() {
+            document.getElementById('preview').classList.remove('show');
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (!gameActive) return;
+            
+            let targetR = emptyPos.r;
+            let targetC = emptyPos.c;
+            
+            switch(e.key) {
+                case 'ArrowUp':
+                    targetR++;
+                    break;
+                case 'ArrowDown':
+                    targetR--;
+                    break;
+                case 'ArrowLeft':
+                    targetC++;
+                    break;
+                case 'ArrowRight':
+                    targetC--;
+                    break;
+                default:
+                    return;
+            }
+            
+            if (targetR >= 0 && targetR < 4 && targetC >= 0 && targetC < 4) {
+                moveTile(targetR, targetC);
+            }
+        });
+
+        // Initialize
+        initGame();
+    </script>
+</body>
+</html>

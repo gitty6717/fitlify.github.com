@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Form - Fitlify</title>
+    <link rel="stylesheet" href="form.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h1><a href="../src/index.html" style="text-decoration: none; color: inherit;">FITLIFY</a></h1>
+            </div>
+            <div class="nav-links">
+                <a href="../src/dashboard/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../src/profile/profile.html" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="form-main">
+        <div class="container">
+            <div class="form-header">
+                <h2>Fitness Information</h2>
+                <p>Tell us about your fitness goals and preferences so we can create the perfect workout plan for you.</p>
+            </div>
+
+            <form id="fitness-form" class="fitness-form">
+                <!-- Personal Information -->
+                <section class="form-section">
+                    <h3 class="section-title">Personal Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input 
+                                type="number" 
+                                id="age" 
+                                name="age" 
+                                min="13" 
+                                max="100" 
+                                required 
+                                placeholder="Enter your age"
+                            >
+                            <span class="form-hint">Age helps determine appropriate intensity</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="height">Height (cm)</label>
+                            <input 
+                                type="number" 
+                                id="height" 
+                                name="height" 
+                                min="100" 
+                                max="250" 
+                                required 
+                                placeholder="Enter your height in centimeters"
+                            >
+                            <span class="form-hint">Used for BMI and exercise selection</span>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input 
+                                type="number" 
+                                id="weight" 
+                                name="weight" 
+                                min="30" 
+                                max="300" 
+                                step="0.1" 
+                                required 
+                                placeholder="Enter your weight in kilograms"
+                            >
+                            <span class="form-hint">Helps calculate calories and intensity</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Fitness Level -->
+                <section class="form-section">
+                    <h3 class="section-title">Fitness Level</h3>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="fitness_level" value="beginner" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Beginner</strong>
+                                <span class="radio-desc">Just starting out or returning after a long break</span>
+                            </span>
+                        </label>
+                        
+                        <label class="radio-label">
+                            <input type="radio" name="fitness_level" value="intermediate" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Intermediate</strong>
+                                <span class="radio-desc">Regular exercise for 6+ months</span>
+                            </span>
+                        </label>
+                        
+                        <label class="radio-label">
+                            <input type="radio" name="fitness_level" value="advanced" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Advanced</strong>
+                                <span class="radio-desc">Years of consistent training experience</span>
+                            </span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Goals -->
+                <section class="form-section">
+                    <h3 class="section-title">Primary Goal</h3>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="goal" value="lose_fat" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Lose Fat</strong>
+                                <span class="radio-desc">Reduce body fat while maintaining muscle</span>
+                            </span>
+                        </label>
+                        
+                        <label class="radio-label">
+                            <input type="radio" name="goal" value="gain_muscle" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Gain Muscle</strong>
+                                <span class="radio-desc">Build lean muscle mass and strength</span>
+                            </span>
+                        </label>
+                        
+                        <label class="radio-label">
+                            <input type="radio" name="goal" value="maintain" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Maintain</strong>
+                                <span class="radio-desc">Improve overall fitness and body composition</span>
+                            </span>
+                        </label>
+                        
+                        <label class="radio-label">
+                            <input type="radio" name="goal" value="endurance" required>
+                            <span class="radio-custom"></span>
+                            <span class="radio-text">
+                                <strong>Endurance</strong>
+                                <span class="radio-desc">Improve cardiovascular fitness and stamina</span>
+                            </span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Workout Schedule -->
+                <section class="form-section">
+                    <h3 class="section-title">Workout Schedule</h3>
+                    <div class="form-group">
+                        <label for="workout_days">Workout Days per Week</label>
+                        <select id="workout_days" name="workout_days" required>
+                            <option value="">Select workout frequency</option>
+                            <option value="2">2 days per week</option>
+                            <option value="3">3 days per week</option>
+                            <option value="4">4 days per week</option>
+                            <option value="5">5 days per week</option>
+                            <option value="6">6 days per week</option>
+                            <option value="7">7 days per week</option>
+                        </select>
+                        <span class="form-hint">Choose a realistic schedule you can maintain</span>
+                    </div>
+                </section>
+
+                <!-- Equipment -->
+                <section class="form-section">
+                    <h3 class="section-title">Available Equipment</h3>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="equipment" value="none">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">No Equipment (Bodyweight Only)</span>
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="equipment" value="dumbbells">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">Dumbbells</span>
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="equipment" value="barbell">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">Barbell and Plates</span>
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="equipment" value="resistance_bands">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">Resistance Bands</span>
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="equipment" value="pull_up_bar">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">Pull-up Bar</span>
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="equipment" value="bench">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">Workout Bench</span>
+                        </label>
+                        
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="equipment" value="treadmill">
+                            <span class="checkmark"></span>
+                            <span class="checkbox-text">Treadmill or Cardio Machine</span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- Health Considerations -->
+                <section class="form-section">
+                    <h3 class="section-title">Health Considerations</h3>
+                    <div class="form-group">
+                        <label for="injuries">Injuries or Limitations</label>
+                        <textarea 
+                            id="injuries" 
+                            name="injuries" 
+                            rows="4" 
+                            placeholder="Let us know about any injuries, physical limitations, or health conditions we should consider..."
+                        ></textarea>
+                        <span class="form-hint">This helps us modify exercises for your safety</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes">Additional Notes or Expectations</label>
+                        <textarea 
+                            id="notes" 
+                            name="notes" 
+                            rows="3" 
+                            placeholder="Any specific goals, preferences, or areas you'd like to focus on..."
+                        ></textarea>
+                        <span class="form-hint">Tell us what you hope to achieve</span>
+                    </div>
+                </section>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" id="submit-btn" class="btn btn-primary">
+                        <span id="btn-text">Generate Workout Plan</span>
+                        <div id="btn-loader" class="btn-loader" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                    </button>
+                    <button type="button" id="reset-btn" class="btn btn-secondary">Reset Form</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Fitlify. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="form.js"></script>
+</body>
+</html>

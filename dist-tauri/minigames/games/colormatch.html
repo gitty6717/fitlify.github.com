@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Match Puzzle</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0e1a;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-title {
+            font-size: 2rem;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 1rem;
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            background: #141b2d;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .target-section {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .target-label {
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .target-color {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+            border-radius: 20px;
+            border: 4px solid #334155;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .timer-bar {
+            width: 200px;
+            height: 8px;
+            background: #1e2538;
+            border-radius: 4px;
+            margin: 1rem auto;
+            overflow: hidden;
+        }
+
+        .timer-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 4px;
+            transition: width 0.1s linear;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+
+        .color-btn {
+            width: 100px;
+            height: 100px;
+            border: 4px solid #334155;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .color-btn:hover {
+            transform: scale(1.05);
+            border-color: #10b981;
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        .color-btn:active {
+            transform: scale(0.95);
+        }
+
+        .feedback {
+            font-size: 1.5rem;
+            font-weight: 700;
+            height: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .feedback.correct {
+            color: #10b981;
+        }
+
+        .feedback.wrong {
+            color: #ef4444;
+        }
+
+        .level-display {
+            font-size: 1rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #1e2538;
+            border: 2px solid #334155;
+            transition: all 0.3s ease;
+        }
+
+        .dot.correct {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        .dot.wrong {
+            background: #ef4444;
+            border-color: #ef4444;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #10b981;
+            color: #0a0e1a;
+        }
+
+        .btn-primary:hover {
+            background: #34d399;
+        }
+
+        .btn-secondary {
+            background: #1e2538;
+            color: #f8fafc;
+            border: 2px solid #334155;
+        }
+
+        .game-over-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: #141b2d;
+            border: 2px solid #334155;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            min-width: 350px;
+        }
+
+        .game-over-modal.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .game-over-modal h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-over-modal.win h2 {
+            color: #10b981;
+        }
+
+        .final-score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .high-score {
+            color: #fbbf24;
+            margin-bottom: 1.5rem;
+        }
+
+        .round-stats {
+            color: #94a3b8;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 400px) {
+            .color-grid {
+                grid-template-columns: repeat(3, 85px);
+                gap: 10px;
+            }
+
+            .color-btn {
+                width: 85px;
+                height: 85px;
+            }
+
+            .target-color {
+                width: 100px;
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <h1 class="game-title">🎨 Color Match</h1>
+        <p class="subtitle">Match the target color before time runs out!</p>
+        <div class="game-stats">
+            <div class="stat-box">
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">Score</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="round">1</div>
+                <div class="stat-label">Round</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="streak">0</div>
+                <div class="stat-label">Streak</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="target-section">
+        <div class="target-label">Match This Color</div>
+        <div class="target-color" id="target-color"></div>
+        <div class="timer-bar">
+            <div class="timer-fill" id="timer-fill" style="width: 100%;"></div>
+        </div>
+    </div>
+
+    <div class="progress-dots" id="progress-dots"></div>
+
+    <div class="level-display" id="level-display">Level 1 - Easy</div>
+    <div class="feedback" id="feedback"></div>
+
+    <div class="color-grid" id="color-grid"></div>
+
+    <div class="controls">
+        <button class="btn-primary" onclick="startGame()">▶ Start Game</button>
+    </div>
+
+    <div class="game-over-modal" id="game-over">
+        <h2>Time's Up!</h2>
+        <div class="final-score" id="final-score">0</div>
+        <div class="round-stats" id="round-stats"></div>
+        <div class="high-score" id="high-score"></div>
+        <button class="btn-primary" onclick="startGame()">Play Again</button>
+    </div>
+
+    <script>
+        // Game State
+        let score = 0;
+        let round = 1;
+        let streak = 0;
+        let targetColor = null;
+        let timeLeft = 100;
+        let maxTime = 100;
+        let timerInterval = null;
+        let gameActive = false;
+        let roundResults = [];
+        let highScore = parseInt(localStorage.getItem('colormatch_highscore') || '0');
+
+        // Color generation helpers
+        function generateRandomColor(difficulty) {
+            const hue = Math.floor(Math.random() * 360);
+            const saturation = 60 + Math.floor(Math.random() * 30);
+            const lightness = 45 + Math.floor(Math.random() * 20);
+            return { h: hue, s: saturation, l: lightness, string: `hsl(${hue}, ${saturation}%, ${lightness}%)` };
+        }
+
+        function generateSimilarColor(baseColor, difficulty) {
+            let variance;
+            switch(difficulty) {
+                case 1: variance = 40; break;
+                case 2: variance = 25; break;
+                case 3: variance = 15; break;
+                case 4: variance = 10; break;
+                default: variance = 5;
+            }
+
+            const hue = (baseColor.h + (Math.random() * variance * 2 - variance) + 360) % 360;
+            const sat = Math.max(30, Math.min(90, baseColor.s + (Math.random() * 20 - 10)));
+            const light = Math.max(30, Math.min(70, baseColor.l + (Math.random() * 15 - 7.5)));
+
+            return `hsl(${Math.round(hue)}, ${Math.round(sat)}%, ${Math.round(light)}%)`;
+        }
+
+        function getDifficulty() {
+            if (round <= 3) return 1;
+            if (round <= 6) return 2;
+            if (round <= 10) return 3;
+            if (round <= 15) return 4;
+            return 5;
+        }
+
+        function getDifficultyName() {
+            const d = getDifficulty();
+            const names = ['', 'Easy', 'Medium', 'Hard', 'Expert', 'Master'];
+            return names[d];
+        }
+
+        function getTimeLimit() {
+            const d = getDifficulty();
+            return Math.max(30, 100 - (d - 1) * 15);
+        }
+
+        function startGame() {
+            score = 0;
+            round = 1;
+            streak = 0;
+            roundResults = [];
+            gameActive = true;
+            
+            document.getElementById('game-over').classList.remove('show');
+            updateDisplay();
+            createProgressDots();
+            nextRound();
+        }
+
+        function nextRound() {
+            if (!gameActive) return;
+
+            const difficulty = getDifficulty();
+            maxTime = getTimeLimit();
+            timeLeft = maxTime;
+
+            // Generate target color
+            targetColor = generateRandomColor();
+
+            // Generate distractors
+            const colors = [targetColor.string];
+            while (colors.length < 9) {
+                const similar = generateSimilarColor(targetColor, difficulty);
+                if (!colors.includes(similar)) {
+                    colors.push(similar);
+                }
+            }
+
+            // Shuffle
+            colors.sort(() => Math.random() - 0.5);
+
+            // Display
+            document.getElementById('target-color').style.background = targetColor.string;
+            
+            const grid = document.getElementById('color-grid');
+            grid.innerHTML = colors.map((color, index) => `
+                <div class="color-btn" 
+                     style="background: ${color}" 
+                     onclick="guess(${color === targetColor.string})"
+                     data-correct="${color === targetColor.string}">
+                </div>
+            `).join('');
+
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('level-display').textContent = 
+                `Level ${difficulty} - ${getDifficultyName()}`;
+
+            // Start timer
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 100);
+            updateTimer();
+        }
+
+        function updateTimer() {
+            timeLeft -= 1;
+            const percentage = (timeLeft / maxTime) * 100;
+            document.getElementById('timer-fill').style.width = percentage + '%';
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                endGame();
+            }
+        }
+
+        function guess(isCorrect) {
+            if (!gameActive) return;
+
+            clearInterval(timerInterval);
+
+            const feedback = document.getElementById('feedback');
+
+            if (isCorrect) {
+                // Correct!
+                const timeBonus = Math.floor(timeLeft / 10);
+                const streakBonus = Math.min(streak * 5, 25);
+                const points = 50 + timeBonus + streakBonus;
+
+                score += points;
+                streak++;
+                roundResults.push(true);
+
+                feedback.textContent = `✓ +${points} points!`;
+                feedback.className = 'feedback correct';
+            } else {
+                // Wrong
+                streak = 0;
+                score = Math.max(0, score - 25);
+                roundResults.push(false);
+
+                feedback.textContent = '✗ Wrong!';
+                feedback.className = 'feedback wrong';
+            }
+
+            updateDisplay();
+            updateProgressDots();
+
+            // Highlight correct answer
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                if (btn.dataset.correct === 'true') {
+                    btn.style.borderColor = '#10b981';
+                    btn.style.transform = 'scale(1.1)';
+                } else {
+                    btn.style.opacity = '0.5';
+                }
+            });
+
+            // Next round after delay
+            setTimeout(() => {
+                round++;
+                updateDisplay();
+                if (gameActive) nextRound();
+            }, 1500);
+        }
+
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('round').textContent = round;
+            document.getElementById('streak').textContent = streak;
+        }
+
+        function createProgressDots() {
+            const container = document.getElementById('progress-dots');
+            container.innerHTML = '';
+            for (let i = 0; i < 10; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                container.appendChild(dot);
+            }
+        }
+
+        function updateProgressDots() {
+            const dots = document.querySelectorAll('.dot');
+            const startIdx = Math.max(0, roundResults.length - 10);
+            
+            dots.forEach((dot, index) => {
+                const resultIndex = startIdx + index;
+                dot.className = 'dot';
+                
+                if (resultIndex < roundResults.length) {
+                    dot.classList.add(roundResults[resultIndex] ? 'correct' : 'wrong');
+                }
+            });
+        }
+
+        function endGame() {
+            gameActive = false;
+
+            const isNewHighScore = score > highScore;
+            if (isNewHighScore) {
+                highScore = score;
+                localStorage.setItem('colormatch_highscore', highScore);
+            }
+
+            const correct = roundResults.filter(r => r).length;
+            const total = roundResults.length;
+
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('round-stats').textContent = 
+                `${correct}/${total} correct (${total > 0 ? Math.round((correct/total)*100) : 0}%)`;
+            document.getElementById('high-score').textContent = 
+                isNewHighScore ? '🏆 New High Score!' : `High Score: ${highScore}`;
+
+            document.getElementById('game-over').classList.add('show');
+
+            // Submit score
+            if (window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'gameScore',
+                    gameId: 'colorMatch',
+                    score: score
+                }, '*');
+            }
+        }
+
+        // Initialize progress dots
+        createProgressDots();
+    </script>
+</body>
+</html>

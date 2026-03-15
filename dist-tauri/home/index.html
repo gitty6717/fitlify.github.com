@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitlify - AI Fitness Planner</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="../shared/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="nav-logo">
+                    <h1>FITLIFY</h1>
+                    <span class="tagline">AI Fitness Planner</span>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="../login/login.html" class="nav-link">Login</a>
+                <a href="../signup/signup.html" class="nav-link">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="home-main">
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2 class="hero-title">Transform Your Fitness Journey</h2>
+                    <p class="hero-description">
+                        Experience the power of AI-driven workout planning personalized to your goals, 
+                        fitness level, and lifestyle. Get custom workout plans, track progress, 
+                        and achieve your fitness goals faster than ever before.
+                    </p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="online-counter">0</span>
+                            <span class="stat-label">Online Now</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="joined-counter">0</span>
+                            <span class="stat-label">People Joined</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="workouts-counter">0</span>
+                            <span class="stat-label">Workouts Made</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="floating-cards">
+                        <div class="card card-1">
+                            <div class="card-icon">💪</div>
+                            <div class="card-text">Strength Training</div>
+                        </div>
+                        <div class="card card-2">
+                            <div class="card-icon">🏃</div>
+                            <div class="card-text">Cardio Plans</div>
+                        </div>
+                        <div class="card card-3">
+                            <div class="card-icon">🎯</div>
+                            <div class="card-text">Goal Tracking</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="container">
+                <h3 class="section-title">Why Choose Fitlify?</h3>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤖</div>
+                        <h4 class="feature-title">AI-Powered Plans</h4>
+                        <p class="feature-description">
+                            Our advanced AI analyzes your fitness data to create personalized workout plans 
+                            that adapt as you progress.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h4 class="feature-title">Progress Tracking</h4>
+                        <p class="feature-description">
+                            Monitor your improvements with detailed analytics and insights to keep you motivated 
+                            and on track.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h4 class="feature-title">Goal Oriented</h4>
+                        <p class="feature-description">
+                            Whether you want to lose fat, gain muscle, or maintain fitness, 
+                            we have plans designed for your specific goals.
+                        </p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h4 class="feature-title">Fast Results</h4>
+                        <p class="feature-description">
+                            Get scientifically optimized workout plans that maximize your results 
+                            in minimum time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <h3 class="cta-title">Ready to Start Your Journey?</h3>
+                <p class="cta-description">Join thousands of users who have transformed their fitness with AI</p>
+                <div class="cta-buttons">
+                    <a href="../login/login.html" class="btn btn-primary">Login</a>
+                    <a href="../signup/signup.html" class="btn btn-secondary">Sign Up</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Fitlify. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="home.js"></script>
+    <script src="../shared/navigation.js"></script>
+    <script src="../shared/updateNotifications.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitlify Authentication Test - Electron</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background: #10b981;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background: #059669;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            background: #f0f0f0;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fitlify Authentication Test - Electron Version</h1>
+    
+    <div class="test-section">
+        <h2>Environment Check</h2>
+        <button onclick="checkEnvironment()">Check Environment</button>
+        <div id="envResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Login Test</h2>
+        <input type="email" id="loginEmail" placeholder="Email (demo@fitlify.com)" value="demo@fitlify.com">
+        <input type="password" id="loginPassword" placeholder="Password (demo123)" value="demo123">
+        <button onclick="testLogin()">Test Login</button>
+        <div id="loginResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Signup Test</h2>
+        <input type="text" id="signupName" placeholder="Name" value="Test User">
+        <input type="email" id="signupEmail" placeholder="Email" value="newuser@test.com">
+        <input type="password" id="signupPassword" placeholder="Password" value="password123">
+        <button onclick="testSignup()">Test Signup</button>
+        <div id="signupResult" class="result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Database Test</h2>
+        <button onclick="testDatabase()">View All Users</button>
+        <div id="dbResult" class="result"></div>
+    </div>
+
+    <script>
+        function checkEnvironment() {
+            const resultDiv = document.getElementById('envResult');
+            
+            const checks = {
+                'window.electronAPI': typeof window.electronAPI !== 'undefined',
+                'window.fetchAPI': typeof window.fetchAPI !== 'undefined',
+                'fetch available': typeof fetch !== 'undefined',
+                'Electron process': typeof process !== 'undefined' && process.versions && process.versions.electron
+            };
+            
+            let html = '<div class="info">Environment Check:</div>';
+            for (const [check, passed] of Object.entries(checks)) {
+                html += `${passed ? '✅' : '❌'} ${check}\n`;
+            }
+            
+            if (window.electronAPI) {
+                html += '\n✅ Electron API available - Using direct database access';
+            } else {
+                html += '\n❌ Electron API not available - Will use fallback methods';
+            }
+            
+            resultDiv.innerHTML = html;
+        }
+        
+        async function testLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            const resultDiv = document.getElementById('loginResult');
+            
+            try {
+                resultDiv.innerHTML = 'Testing login...';
+                
+                let result;
+                
+                // Try Electron API first
+                if (window.electronAPI) {
+                    result = await window.electronAPI.login(email, password);
+                    resultDiv.innerHTML += '\n✅ Used Electron API';
+                } else if (window.fetchAPI) {
+                    result = await window.fetchAPI.post('http://localhost:3001/api/login', { email, password });
+                    resultDiv.innerHTML += '\n✅ Used Fetch API';
+                } else {
+                    // Direct fetch fallback
+                    const response = await fetch('http://localhost:3001/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password })
+                    });
+                    result = await response.json();
+                    resultDiv.innerHTML += '\n✅ Used Direct Fetch';
+                }
+                
+                if (result.success) {
+                    resultDiv.innerHTML = `<div class="success">✅ Login successful!</div>
+                        <pre>${JSON.stringify(result, null, 2)}</pre>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Login failed: ${result.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testSignup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const resultDiv = document.getElementById('signupResult');
+            
+            try {
+                resultDiv.innerHTML = 'Testing signup...';
+                
+                let result;
+                
+                // Try Electron API first
+                if (window.electronAPI) {
+                    result = await window.electronAPI.signup(name, email, password, '');
+                    resultDiv.innerHTML += '\n✅ Used Electron API';
+                } else if (window.fetchAPI) {
+                    result = await window.fetchAPI.post('http://localhost:3001/api/signup', { name, email, password });
+                    resultDiv.innerHTML += '\n✅ Used Fetch API';
+                } else {
+                    // Direct fetch fallback
+                    const response = await fetch('http://localhost:3001/api/signup', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, password })
+                    });
+                    result = await response.json();
+                    resultDiv.innerHTML += '\n✅ Used Direct Fetch';
+                }
+                
+                if (result.success) {
+                    resultDiv.innerHTML = `<div class="success">✅ Signup successful!</div>
+                        <pre>${JSON.stringify(result, null, 2)}</pre>`;
+                } else {
+                    resultDiv.innerHTML = `<div class="error">❌ Signup failed: ${result.message}</div>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        async function testDatabase() {
+            const resultDiv = document.getElementById('dbResult');
+            
+            try {
+                resultDiv.innerHTML = 'Fetching users...';
+                
+                let users;
+                
+                if (window.electronAPI) {
+                    users = await window.electronAPI.getUsers();
+                    resultDiv.innerHTML += '\n✅ Used Electron API';
+                } else {
+                    resultDiv.innerHTML = '\n❌ Electron API not available';
+                    return;
+                }
+                
+                resultDiv.innerHTML = `<div class="success">✅ Database contains ${users.length} users:</div>
+                    <pre>${JSON.stringify(users, null, 2)}</pre>`;
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        }
+        
+        // Check environment on page load
+        window.onload = checkEnvironment;
+    </script>
+</body>
+</html>

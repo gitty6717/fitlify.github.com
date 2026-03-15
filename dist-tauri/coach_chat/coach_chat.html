@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Coach Chat - FITLIFY</title>
+    <link rel="stylesheet" href="coach_chat.css">
+    <link rel="stylesheet" href="../src/shared/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="nav-logo">
+                    <h1><a href="../src/index.html" style="text-decoration: none; color: inherit;">FITLIFY</a></h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="../src/dashboard/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../src/profile/profile.html" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="coach-chat-main">
+        <div class="chat-container">
+            <!-- Chat Header -->
+            <div class="chat-header">
+                <div class="coach-info">
+                    <div class="coach-avatar">🤖</div>
+                    <div class="coach-details">
+                        <h2>AI Fitness Coach</h2>
+                        <p>Your personal fitness assistant</p>
+                    </div>
+                </div>
+                <div class="coach-status">
+                    <span class="status-indicator online"></span>
+                    <span class="status-text">Online</span>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chat-messages">
+                <div class="welcome-message">
+                    <div class="message ai-message">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            <p>Hello! I'm your AI Fitness Coach. I'm here to help you with:</p>
+                            <ul>
+                                <li>Exercise techniques and form guidance</li>
+                                <li>Workout planning and progression</li>
+                                <li>Nutrition advice for your goals</li>
+                                <li>Injury prevention and recovery</li>
+                                <li>Motivation and accountability</li>
+                            </ul>
+                            <p>What would you like help with today?</p>
+                        </div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+
+                <!-- Quick Questions -->
+                <div class="quick-questions">
+                    <p class="quick-questions-label">Quick Questions:</p>
+                    <div class="question-buttons">
+                        <button class="question-btn" data-question="How do I perform a squat safely?">
+                            🏋️ How to squat safely?
+                        </button>
+                        <button class="question-btn" data-question="How can I improve my endurance?">
+                            🏃 Improve endurance
+                        </button>
+                        <button class="question-btn" data-question="What should I eat before a workout?">
+                            🥗 Pre-workout nutrition
+                        </button>
+                        <button class="question-btn" data-question="How do I prevent muscle soreness?">
+                            💪 Prevent soreness
+                        </button>
+                        <button class="question-btn" data-question="What's the best way to lose weight?">
+                            ⚖️ Weight loss tips
+                        </button>
+                        <button class="question-btn" data-question="How often should I work out?">
+                            📅 Workout frequency
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="chat-input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="message-input" 
+                        class="message-input" 
+                        placeholder="Ask me anything about fitness..."
+                        rows="1"
+                    ></textarea>
+                    <button id="send-button" class="send-button" disabled>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 13 4 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-actions">
+                    <button id="voice-button" class="action-button" title="Voice input">
+                        🎤
+                    </button>
+                    <button id="attach-button" class="action-button" title="Attach file">
+                        📎
+                    </button>
+                    <button id="clear-button" class="action-button" title="Clear chat">
+                        🗑️
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Side Panel -->
+        <div class="side-panel">
+            <!-- Conversation History -->
+            <div class="conversation-history">
+                <div class="panel-header">
+                    <h3>Recent Conversations</h3>
+                    <button id="new-chat" class="new-chat-btn">+ New Chat</button>
+                </div>
+                <div class="history-list" id="history-list">
+                    <div class="history-item active">
+                        <div class="history-title">Current Conversation</div>
+                        <div class="history-time">Just now</div>
+                        <div class="history-preview">How do I perform a squat...</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-title">Workout Planning</div>
+                        <div class="history-time">2 hours ago</div>
+                        <div class="history-preview">Can you help me create a...</div>
+                    </div>
+                    <div class="history-item">
+                        <div class="history-title">Nutrition Advice</div>
+                        <div class="history-time">Yesterday</div>
+                        <div class="history-preview">What should I eat after...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coach Capabilities -->
+            <div class="coach-capabilities">
+                <div class="panel-header">
+                    <h3>Coach Capabilities</h3>
+                </div>
+                <div class="capabilities-list">
+                    <div class="capability-item">
+                        <div class="capability-icon">🏋️</div>
+                        <div class="capability-info">
+                            <h4>Exercise Guidance</h4>
+                            <p>Proper form and technique</p>
+                        </div>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-icon">📊</div>
+                        <div class="capability-info">
+                            <h4>Workout Planning</h4>
+                            <p>Personalized programming</p>
+                        </div>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-icon">🥗</div>
+                        <div class="capability-info">
+                            <h4>Nutrition Advice</h4>
+                            <p>Diet and supplement tips</p>
+                        </div>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-icon">🏥</div>
+                        <div class="capability-info">
+                            <h4>Injury Prevention</h4>
+                            <p>Safety and recovery</p>
+                        </div>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-icon">🎯</div>
+                        <div class="capability-info">
+                            <h4>Goal Setting</h4>
+                            <p>SMART objectives</p>
+                        </div>
+                    </div>
+                    <div class="capability-item">
+                        <div class="capability-icon">💪</div>
+                        <div class="capability-info">
+                            <h4>Motivation</h4>
+                            <p>Accountability and support</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tips Section -->
+            <div class="tips-section">
+                <div class="panel-header">
+                    <h3>Pro Tips</h3>
+                </div>
+                <div class="tips-list">
+                    <div class="tip-item">
+                        <div class="tip-icon">💡</div>
+                        <p>Be specific with your questions for better answers</p>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon">📝</div>
+                        <p>Ask about your specific exercises or goals</p>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon">⏰</div>
+                        <p>Save important advice for future reference</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Voice Recording Modal -->
+    <div id="voice-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🎤 Voice Input</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="voice-interface">
+                    <div class="voice-animation" id="voice-animation">
+                        <div class="wave"></div>
+                        <div class="wave"></div>
+                        <div class="wave"></div>
+                    </div>
+                    <div class="voice-status" id="voice-status">
+                        Click to start recording...
+                    </div>
+                    <button id="voice-record-btn" class="voice-record-btn">
+                        <span class="record-icon">🎤</span>
+                        <span class="record-text">Start Recording</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rating Modal -->
+    <div id="rating-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Rate this response</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>How helpful was this response?</p>
+                <div class="rating-stars" id="rating-stars">
+                    <span class="star" data-rating="1">⭐</span>
+                    <span class="star" data-rating="2">⭐</span>
+                    <span class="star" data-rating="3">⭐</span>
+                    <span class="star" data-rating="4">⭐</span>
+                    <span class="star" data-rating="5">⭐</span>
+                </div>
+                <textarea id="rating-feedback" placeholder="Optional feedback..." rows="3"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button id="submit-rating" class="btn-primary">Submit Rating</button>
+                <button class="btn-secondary modal-close">Skip</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <span class="notification-icon">✓</span>
+            <span class="notification-message">Message sent successfully!</span>
+        </div>
+    </div>
+
+    <script src="coach_chat.js"></script>
+    <script src="../src/shared/navigation.js"></script>
+</body>
+</html>
