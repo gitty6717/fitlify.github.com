@@ -13,7 +13,7 @@ function createWindow() {
       contextIsolation: false,
       webSecurity: false
     },
-    icon: path.join(__dirname, 'dist/src/assets/icon.png')
+    icon: path.join(__dirname, 'assets/fitlify-icon-512.png')
   });
 
   // Load the app

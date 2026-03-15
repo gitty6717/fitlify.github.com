@@ -1,6 +1,6 @@
 {
   "name": "fitlify",
-  "version": "1.0.1",
+  "version": "2.1.1",
   "description": "Fitlify - Your Personal Fitness Companion",
   "main": "main.js",
   "author": "Fitlify",
@@ -21,7 +21,6 @@
       "output": "../../",
       "buildResources": "../build"
     },
-    "icon": "assets/fitlify-icon-512.png",
     "files": [
       "main.js",
       "server/database.js",
