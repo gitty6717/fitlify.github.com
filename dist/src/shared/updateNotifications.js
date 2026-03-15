@@ -2,7 +2,7 @@
 class UpdateNotificationManager {
     constructor() {
         this.lastVersion = localStorage.getItem('fitlify_last_version') || '1.0.0';
-        this.currentVersion = '2.10.1';
+        this.currentVersion = '2.10.2';
         this.hasShownWhatsNew = localStorage.getItem('fitlify_whats_new_shown') === 'true';
         this.init();
     }

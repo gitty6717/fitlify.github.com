@@ -26,6 +26,15 @@ ThemeManager.init();
 // API Configuration
 const API_BASE = 'http://localhost:3002/api';
 
+// Base URL for navigation
+const getBaseUrl = () => {
+    if (window.location.protocol === 'file:') {
+        return 'https://gitty6717.github.io/fitlify.github.com/dist/src';
+    } else {
+        return '../src';
+    }
+};
+
 // DOM Elements
 const signupForm = document.getElementById('signup-form');
 const nameInput = document.getElementById('name');
@@ -83,7 +92,7 @@ function checkExistingSession() {
                 // Valid token, redirect to home
                 showSuccess('Already logged in, redirecting...');
                 setTimeout(() => {
-                    window.location.href = '../home/index.html';
+                    window.location.href = `${getBaseUrl()}/home/index.html`;
                 }, 1000);
             } else {
                 // Invalid token, remove it
@@ -237,7 +246,7 @@ async function handleSignup(e) {
             
             // Redirect to home page
             setTimeout(() => {
-                window.location.href = '../home/index.html';
+                window.location.href = `${getBaseUrl()}/home/index.html`;
             }, 1500);
         } else {
             showError(data.message || 'Signup failed');

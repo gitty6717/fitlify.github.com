@@ -5,8 +5,18 @@ class NavigationHandler {
         this.overlay = null;
         this.hamburger = null;
         this.closeBtn = null;
+        this.baseUrl = this.getBaseUrl();
         
         this.init();
+    }
+    
+    getBaseUrl() {
+        // Check if we're running in production (installed app) vs development
+        if (window.location.protocol === 'file:') {
+            return 'https://gitty6717.github.io/fitlify.github.com/dist/src';
+        } else {
+            return '../src'; // Development mode
+        }
     }
     
     init() {
@@ -27,35 +37,35 @@ class NavigationHandler {
                 </div>
                 <div class="sidebar-content">
                     <nav class="sidebar-nav">
-                        <a href="../src/index.html" class="sidebar-link ${currentPage === 'home.html' ? 'active' : ''}">
+                        <a href="${this.baseUrl}/index.html" class="sidebar-link ${currentPage === 'home.html' ? 'active' : ''}">
                             <span class="sidebar-icon">🏠</span>
                             <span>Home</span>
                         </a>
-                        <a href="../src/dashboard/dashboard.html" class="sidebar-link ${currentPage === 'dashboard.html' ? 'active' : ''}">
+                        <a href="${this.baseUrl}/dashboard/dashboard.html" class="sidebar-link ${currentPage === 'dashboard.html' ? 'active' : ''}">
                             <span class="sidebar-icon">📊</span>
                             <span>Dashboard</span>
                         </a>
-                        <a href="../src/profile/profile.html" class="sidebar-link ${currentPage === 'profile.html' ? 'active' : ''}">
+                        <a href="${this.baseUrl}/profile/profile.html" class="sidebar-link ${currentPage === 'profile.html' ? 'active' : ''}">
                             <span class="sidebar-icon">👤</span>
                             <span>Profile</span>
                         </a>
-                        <a href="../src/progress/progress.html" class="sidebar-link ${currentPage === 'progress.html' ? 'active' : ''}">
+                        <a href="${this.baseUrl}/progress/progress.html" class="sidebar-link ${currentPage === 'progress.html' ? 'active' : ''}">
                             <span class="sidebar-icon">📈</span>
                             <span>Progress</span>
                         </a>
-                        <a href="../src/exercise_selector/exercise_selector.html" class="sidebar-link ${currentPage === 'exercise_selector.html' ? 'active' : ''}">
+                        <a href="${this.baseUrl}/exercise_selector/exercise_selector.html" class="sidebar-link ${currentPage === 'exercise_selector.html' ? 'active' : ''}">
                             <span class="sidebar-icon">🏋️</span>
                             <span>Exercises</span>
                         </a>
-                        <a href="../src/goal_selector/goal_selector.html" class="sidebar-link ${currentPage === 'goal_selector.html' ? 'active' : ''}">
+                        <a href="${this.baseUrl}/goal_selector/goal_selector.html" class="sidebar-link ${currentPage === 'goal_selector.html' ? 'active' : ''}">
                             <span class="sidebar-icon">🎯</span>
                             <span>Goals</span>
                         </a>
-                        <a href="../src/coach_chat/coach_chat.html" class="sidebar-link ${currentPage === 'coach_chat.html' ? 'active' : ''}">
+                        <a href="${this.baseUrl}/coach_chat/coach_chat.html" class="sidebar-link ${currentPage === 'coach_chat.html' ? 'active' : ''}">
                             <span class="sidebar-icon">🤖</span>
                             <span>AI Coach</span>
                         </a>
-                        <a href="../src/games/games.html" class="sidebar-link ${currentPage === 'games.html' ? 'active' : ''}">
+                        <a href="${this.baseUrl}/minigames/games.html" class="sidebar-link ${currentPage === 'games.html' ? 'active' : ''}">
                             <span class="sidebar-icon">🎮</span>
                             <span>Minigames</span>
                         </a>
