@@ -1,6 +1,6 @@
 {
   "name": "fitlify",
-  "version": "2.11.0",
+  "version": "2.13.0",
   "description": "Fitlify - Your Personal Fitness Companion",
   "main": "main.js",
   "author": "Fitlify",
@@ -24,12 +24,12 @@
     "icon": "assets/icon.png",
     "files": [
       "main.js",
-      "dist/src/**/*",
-      "!dist/src/node_modules/**/*",
-      "!dist/src/.git/**/*",
-      "!dist/src/test-*.html",
-      "!dist/src/**/*.bat",
-      "!dist/src/**/guides/**/*"
+      "dist/**/*",
+      "!dist/node_modules/**/*",
+      "!dist/.git/**/*",
+      "!dist/test-*.html",
+      "!dist/**/*.bat",
+      "!dist/**/guides/**/*"
     ],
     "publish": {
       "provider": "github",

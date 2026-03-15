@@ -13,7 +13,7 @@ class NavigationHandler {
     getBaseUrl() {
         // Check if we're running in production (installed app) vs development
         if (window.location.protocol === 'file:') {
-            return '../src'; // Local installed files
+            return 'dist/src'; // Local installed files - maintain structure
         } else {
             return '../src'; // Development mode
         }

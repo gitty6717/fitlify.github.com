@@ -29,7 +29,7 @@ const API_BASE = 'http://localhost:3002/api';
 // Base URL for navigation
 const getBaseUrl = () => {
     if (window.location.protocol === 'file:') {
-        return '../src'; // Local installed files
+        return 'dist/src'; // Local installed files - maintain structure
     } else {
         return '../src'; // Development mode
     }

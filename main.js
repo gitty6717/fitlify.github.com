@@ -21,7 +21,7 @@ function createWindow() {
     mainWindow.loadFile('dist/src/login/login.html');
     mainWindow.webContents.openDevTools();
   } else {
-    // Load from local installed files in production
+    // In production, load from dist/src structure
     mainWindow.loadFile('dist/src/login/login.html');
   }
 
