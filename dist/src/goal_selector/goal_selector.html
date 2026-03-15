@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Selector - FITLIFY</title>
+    <link rel="stylesheet" href="goal_selector.css">
+    <link rel="stylesheet" href="../src/shared/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="nav-logo">
+                    <h1><a href="../src/index.html" style="text-decoration: none; color: inherit;">FITLIFY</a></h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="../src/dashboard/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../src/profile/profile.html" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="goal-selector-main">
+        <div class="container">
+            <div class="selector-header">
+                <h2>Select Your Fitness Goals</h2>
+                <p>Choose multiple goals that best describe what you want to achieve. This helps us create a personalized workout plan tailored to your needs.</p>
+            </div>
+
+            <!-- Search and Filter Section -->
+            <div class="search-section">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="goal-search" 
+                        class="search-input" 
+                        placeholder="Search goals by name, category, or keywords..."
+                        autocomplete="off"
+                    >
+                    <div class="search-icon">🔍</div>
+                    <button id="clear-search" class="clear-search-btn" style="display: none;">✕</button>
+                </div>
+                
+                <div class="filter-section">
+                    <div class="filter-group">
+                        <label class="filter-label">Category:</label>
+                        <div class="category-filters">
+                            <button class="filter-btn active" data-category="all">All Categories</button>
+                            <button class="filter-btn" data-category="Strength">Strength</button>
+                            <button class="filter-btn" data-category="Muscle Growth">Muscle Growth</button>
+                            <button class="filter-btn" data-category="Fat Loss">Fat Loss</button>
+                            <button class="filter-btn" data-category="Endurance">Endurance</button>
+                            <button class="filter-btn" data-category="Mobility">Mobility</button>
+                            <button class="filter-btn" data-category="Flexibility">Flexibility</button>
+                            <button class="filter-btn" data-category="Athletic Performance">Athletic Performance</button>
+                            <button class="filter-btn" data-category="Sports Training">Sports Training</button>
+                            <button class="filter-btn" data-category="Rehabilitation">Rehabilitation</button>
+                            <button class="filter-btn" data-category="General Health">General Health</button>
+                        </div>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label class="filter-label">Difficulty:</label>
+                        <div class="difficulty-filters">
+                            <button class="filter-btn active" data-difficulty="all">All Levels</button>
+                            <button class="filter-btn" data-difficulty="beginner">Beginner</button>
+                            <button class="filter-btn" data-difficulty="intermediate">Intermediate</button>
+                            <button class="filter-btn" data-difficulty="advanced">Advanced</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selected Goals Panel -->
+            <div class="selected-panel">
+                <div class="selected-header">
+                    <h3>Selected Goals (<span id="selected-count">0</span>)</h3>
+                    <div class="selected-actions">
+                        <button id="clear-all" class="clear-all-btn">Clear All</button>
+                        <button id="recommend-goals" class="recommend-btn">Get Recommendations</button>
+                    </div>
+                </div>
+                <div id="selected-goals" class="selected-goals-list">
+                    <div class="empty-state">
+                        <p>No goals selected yet. Start selecting from the goals below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goals Grid -->
+            <div class="goals-section">
+                <div class="goals-header">
+                    <h3>Goal Library</h3>
+                    <div class="goals-stats">
+                        <span id="total-goals">Loading...</span> goals found
+                    </div>
+                </div>
+                
+                <div id="goals-grid" class="goals-grid">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading goal library...</p>
+                    </div>
+                </div>
+                
+                <!-- Load More Button -->
+                <div class="load-more-section">
+                    <button id="load-more" class="load-more-btn" style="display: none;">Load More Goals</button>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="save-selection" class="btn-primary" disabled>
+                    Continue to Workout Plan (<span id="save-count">0</span>)
+                </button>
+                <button id="back-to-exercises" class="btn-secondary">Back to Exercises</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Goal Detail Modal -->
+    <div id="goal-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-goal-name">Goal Name</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="goal-details">
+                    <div class="detail-row">
+                        <span class="label">Category:</span>
+                        <span id="modal-category" class="value category-badge"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Difficulty:</span>
+                        <span id="modal-difficulty" class="difficulty-badge"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Age Group:</span>
+                        <span id="modal-age-group" class="value"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Tags:</span>
+                        <div id="modal-tags" class="tags-container"></div>
+                    </div>
+                </div>
+                
+                <div class="goal-description">
+                    <h4>Description</h4>
+                    <p id="modal-description"></p>
+                </div>
+                
+                <div class="goal-recommendations">
+                    <h4>Recommended For</h4>
+                    <p id="modal-recommendations"></p>
+                </div>
+                
+                <div class="related-goals">
+                    <h4>Related Goals</h4>
+                    <div id="related-goals-list" class="related-goals-list"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-select" class="btn-primary">Select Goal</button>
+                <button class="btn-secondary modal-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Recommendations Modal -->
+    <div id="recommendations-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🤖 AI Goal Recommendations</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="recommendations-intro">
+                    <p>Based on your profile and exercise capabilities, here are our AI-powered goal recommendations:</p>
+                </div>
+                <div id="ai-recommendations" class="ai-recommendations">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Analyzing your profile...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="apply-recommendations" class="btn-primary">Apply Recommendations</button>
+                <button class="btn-secondary modal-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <span class="notification-icon">✓</span>
+            <span class="notification-message">Goals saved successfully!</span>
+        </div>
+    </div>
+
+    <script src="goal_selector.js"></script>
+    <script src="../src/shared/navigation.js"></script>
+</body>
+</html>

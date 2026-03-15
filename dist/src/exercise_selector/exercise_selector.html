@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Selector - FITLIFY</title>
+    <link rel="stylesheet" href="exercise_selector.css">
+    <link rel="stylesheet" href="../src/shared/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="nav-logo">
+                    <h1><a href="../src/index.html" style="text-decoration: none; color: inherit;">FITLIFY</a></h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="../src/dashboard/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../src/profile/profile.html" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="exercise-selector-main">
+        <div class="container">
+            <div class="selector-header">
+                <h2>Select Your Exercises</h2>
+                <p>Choose all the exercises you can currently perform. This helps us create the perfect workout plan for your fitness level.</p>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-section">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="exercise-search" 
+                        class="search-input" 
+                        placeholder="Search exercises by name or category..."
+                        autocomplete="off"
+                    >
+                    <div class="search-icon">🔍</div>
+                    <button id="clear-search" class="clear-search-btn" style="display: none;">✕</button>
+                </div>
+                <div class="search-filters">
+                    <button class="filter-btn active" data-difficulty="all">All Levels</button>
+                    <button class="filter-btn" data-difficulty="beginner">Beginner</button>
+                    <button class="filter-btn" data-difficulty="intermediate">Intermediate</button>
+                    <button class="filter-btn" data-difficulty="advanced">Advanced</button>
+                </div>
+            </div>
+
+            <!-- Selected Exercises Panel -->
+            <div class="selected-panel">
+                <div class="selected-header">
+                    <h3>Selected Exercises (<span id="selected-count">0</span>)</h3>
+                    <button id="clear-all" class="clear-all-btn">Clear All</button>
+                </div>
+                <div id="selected-exercises" class="selected-exercises-list">
+                    <div class="empty-state">
+                        <p>No exercises selected yet. Start selecting from the categories below.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise Categories -->
+            <div class="exercise-categories">
+                <div class="categories-header">
+                    <h3>Exercise Library</h3>
+                    <div class="category-stats">
+                        <span id="total-exercises">Loading...</span> exercises found
+                    </div>
+                </div>
+                
+                <div id="exercise-list" class="exercise-list">
+                    <!-- Categories will be dynamically loaded here -->
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading exercise library...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button id="save-selection" class="btn-primary" disabled>
+                    Save Selection (<span id="save-count">0</span>)
+                </button>
+                <button id="continue-later" class="btn-secondary">Continue Later</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Exercise Info Modal -->
+    <div id="exercise-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-exercise-name">Exercise Name</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="exercise-details">
+                    <div class="detail-row">
+                        <span class="label">Category:</span>
+                        <span id="modal-category" class="value"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Difficulty:</span>
+                        <span id="modal-difficulty" class="difficulty-badge"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Equipment:</span>
+                        <span id="modal-equipment" class="value"></span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Muscle Groups:</span>
+                        <span id="modal-muscles" class="value"></span>
+                    </div>
+                </div>
+                
+                <div class="exercise-description">
+                    <h4>Description</h4>
+                    <p id="modal-description"></p>
+                </div>
+                
+                <div class="exercise-instructions">
+                    <h4>Instructions</h4>
+                    <ol id="modal-instructions"></ol>
+                </div>
+                
+                <div class="exercise-safety">
+                    <h4>Safety Notes</h4>
+                    <p id="modal-safety"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-select" class="btn-primary">Select Exercise</button>
+                <button class="btn-secondary modal-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <span class="notification-icon">✓</span>
+            <span class="notification-message">Exercise selection saved!</span>
+        </div>
+    </div>
+
+    <script src="exercise_selector.js"></script>
+    <script src="../src/shared/navigation.js"></script>
+</body>
+</html>

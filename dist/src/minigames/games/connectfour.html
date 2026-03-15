@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Four</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0e1a;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .game-title {
+            font-size: 2rem;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .turn-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+
+        .turn-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .turn-dot.red {
+            background: #ef4444;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+
+        .turn-dot.yellow {
+            background: #fbbf24;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+        }
+
+        .game-stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 0.5rem 1rem;
+            background: #141b2d;
+            border-radius: 10px;
+            border: 2px solid #334155;
+        }
+
+        .stat-box.wins {
+            border-color: #ef4444;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-value.red {
+            color: #ef4444;
+        }
+
+        .stat-value.yellow {
+            color: #fbbf24;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(7, 60px);
+            grid-template-rows: repeat(6, 60px);
+            gap: 5px;
+            background: #1e3a5f;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .cell {
+            width: 60px;
+            height: 60px;
+            background: #0f172a;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            box-shadow: inset 0 3px 10px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+
+        .cell:hover::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(16, 185, 129, 0.3);
+            pointer-events: none;
+        }
+
+        .cell.red, .cell.yellow {
+            cursor: default;
+        }
+
+        .cell.red::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            background: radial-gradient(circle at 30% 30%, #ef4444, #dc2626);
+            border-radius: 50%;
+            box-shadow: 0 3px 10px rgba(239, 68, 68, 0.5), inset 0 -3px 10px rgba(0,0,0,0.3);
+            animation: dropIn 0.3s ease;
+        }
+
+        .cell.yellow::after {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            right: 5px;
+            bottom: 5px;
+            background: radial-gradient(circle at 30% 30%, #fbbf24, #f59e0b);
+            border-radius: 50%;
+            box-shadow: 0 3px 10px rgba(251, 191, 36, 0.5), inset 0 -3px 10px rgba(0,0,0,0.3);
+            animation: dropIn 0.3s ease;
+        }
+
+        .cell.winning::after {
+            animation: pulse 1s ease infinite;
+        }
+
+        @keyframes dropIn {
+            0% {
+                transform: translateY(-300px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px currentColor; }
+            50% { transform: scale(1.1); box-shadow: 0 0 40px currentColor; }
+        }
+
+        .controls {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #10b981;
+            color: #0a0e1a;
+        }
+
+        .btn-primary:hover {
+            background: #34d399;
+        }
+
+        .btn-secondary {
+            background: #1e2538;
+            color: #f8fafc;
+            border: 2px solid #334155;
+        }
+
+        .difficulty-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .diff-btn {
+            padding: 8px 16px;
+            border: 2px solid #334155;
+            background: #141b2d;
+            color: #f8fafc;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .diff-btn.active {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .game-over-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: #141b2d;
+            border: 2px solid #334155;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            min-width: 300px;
+        }
+
+        .game-over-modal.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .game-over-modal h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .game-over-modal.win h2 {
+            color: #10b981;
+        }
+
+        .game-over-modal.lose h2 {
+            color: #ef4444;
+        }
+
+        .game-over-modal.draw h2 {
+            color: #fbbf24;
+        }
+
+        .win-rate {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        @media (max-width: 480px) {
+            .game-board {
+                grid-template-columns: repeat(7, 40px);
+                grid-template-rows: repeat(6, 40px);
+            }
+
+            .cell {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <h1 class="game-title">🔴 Connect Four</h1>
+        <div class="difficulty-selector">
+            <button class="diff-btn active" data-diff="easy">Easy</button>
+            <button class="diff-btn" data-diff="medium">Medium</button>
+            <button class="diff-btn" data-diff="hard">Hard</button>
+        </div>
+        <div class="turn-indicator">
+            <span>Turn:</span>
+            <span class="turn-dot red" id="turn-dot"></span>
+            <span id="turn-text">Your Turn (Red)</span>
+        </div>
+        <div class="game-stats">
+            <div class="stat-box wins">
+                <div class="stat-value red" id="wins">0</div>
+                <div class="stat-label">Your Wins</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value yellow" id="losses">0</div>
+                <div class="stat-label">AI Wins</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-value" id="draws">0</div>
+                <div class="stat-label">Draws</div>
+            </div>
+        </div>
+        <div class="win-rate" id="win-rate">Win Rate: 0%</div>
+    </div>
+
+    <div class="game-board" id="board"></div>
+
+    <div class="controls">
+        <button class="btn-primary" onclick="restartGame()">🔄 New Game</button>
+        <button class="btn-secondary" onclick="resetStats()">Reset Stats</button>
+    </div>
+
+    <div class="game-over-modal" id="game-over">
+        <h2 id="game-result">Game Over</h2>
+        <button class="btn-primary" onclick="restartGame()" style="margin-top: 1rem;">Play Again</button>
+    </div>
+
+    <script>
+        // Game State
+        const ROWS = 6;
+        const COLS = 7;
+        let board = [];
+        let currentPlayer = 'red';
+        let gameActive = true;
+        let difficulty = 'easy';
+        let stats = {
+            wins: 0,
+            losses: 0,
+            draws: 0
+        };
+
+        function initGame() {
+            board = Array(ROWS).fill().map(() => Array(COLS).fill(null));
+            currentPlayer = 'red';
+            gameActive = true;
+            render();
+            loadStats();
+            updateTurnDisplay();
+            document.getElementById('game-over').classList.remove('show');
+        }
+
+        function render() {
+            const boardEl = document.getElementById('board');
+            boardEl.innerHTML = '';
+            
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    if (board[r][c]) {
+                        cell.classList.add(board[r][c]);
+                    }
+                    cell.dataset.col = c;
+                    cell.onclick = () => dropPiece(c);
+                    boardEl.appendChild(cell);
+                }
+            }
+        }
+
+        function dropPiece(col) {
+            if (!gameActive || currentPlayer !== 'red') return;
+            
+            // Find lowest empty row
+            let row = -1;
+            for (let r = ROWS - 1; r >= 0; r--) {
+                if (!board[r][col]) {
+                    row = r;
+                    break;
+                }
+            }
+            
+            if (row === -1) return; // Column full
+            
+            board[row][col] = currentPlayer;
+            render();
+            
+            if (checkWin(row, col)) {
+                gameOver('win');
+                return;
+            }
+            
+            if (checkDraw()) {
+                gameOver('draw');
+                return;
+            }
+            
+            currentPlayer = 'yellow';
+            updateTurnDisplay();
+            
+            // AI Move
+            setTimeout(aiMove, 500);
+        }
+
+        function aiMove() {
+            if (!gameActive) return;
+            
+            let col;
+            
+            switch(difficulty) {
+                case 'easy':
+                    col = getRandomMove();
+                    break;
+                case 'medium':
+                    col = getMediumMove();
+                    break;
+                case 'hard':
+                    col = getBestMove();
+                    break;
+            }
+            
+            if (col === -1) return;
+            
+            // Find lowest empty row
+            let row = -1;
+            for (let r = ROWS - 1; r >= 0; r--) {
+                if (!board[r][col]) {
+                    row = r;
+                    break;
+                }
+            }
+            
+            if (row === -1) return;
+            
+            board[row][col] = 'yellow';
+            render();
+            
+            if (checkWin(row, col)) {
+                gameOver('lose');
+                return;
+            }
+            
+            if (checkDraw()) {
+                gameOver('draw');
+                return;
+            }
+            
+            currentPlayer = 'red';
+            updateTurnDisplay();
+        }
+
+        function getRandomMove() {
+            const available = [];
+            for (let c = 0; c < COLS; c++) {
+                if (!board[0][c]) available.push(c);
+            }
+            return available[Math.floor(Math.random() * available.length)];
+        }
+
+        function getMediumMove() {
+            // Check for winning move
+            for (let c = 0; c < COLS; c++) {
+                if (canWin(c, 'yellow')) return c;
+            }
+            
+            // Block player winning move
+            for (let c = 0; c < COLS; c++) {
+                if (canWin(c, 'red')) return c;
+            }
+            
+            return getRandomMove();
+        }
+
+        function getBestMove() {
+            // Check for winning move
+            for (let c = 0; c < COLS; c++) {
+                if (canWin(c, 'yellow')) return c;
+            }
+            
+            // Block player winning move
+            for (let c = 0; c < COLS; c++) {
+                if (canWin(c, 'red')) return c;
+            }
+            
+            // Look for moves that create two threats
+            for (let c = 0; c < COLS; c++) {
+                if (createsDoubleThreat(c, 'yellow')) return c;
+            }
+            
+            // Prefer center column
+            const center = Math.floor(COLS / 2);
+            if (!board[0][center]) return center;
+            
+            return getRandomMove();
+        }
+
+        function canWin(col, player) {
+            for (let r = ROWS - 1; r >= 0; r--) {
+                if (!board[r][col]) {
+                    board[r][col] = player;
+                    const wins = checkWin(r, col);
+                    board[r][col] = null;
+                    return wins;
+                }
+            }
+            return false;
+        }
+
+        function createsDoubleThreat(col, player) {
+            // Simplified check - would need more complex analysis for full implementation
+            return false;
+        }
+
+        function checkWin(row, col) {
+            const player = board[row][col];
+            const directions = [
+                [0, 1], // Horizontal
+                [1, 0], // Vertical
+                [1, 1], // Diagonal down-right
+                [1, -1] // Diagonal down-left
+            ];
+            
+            for (const [dr, dc] of directions) {
+                let count = 1;
+                let winningCells = [[row, col]];
+                
+                // Check positive direction
+                for (let i = 1; i < 4; i++) {
+                    const r = row + dr * i;
+                    const c = col + dc * i;
+                    if (r >= 0 && r < ROWS && c >= 0 && c < COLS && board[r][c] === player) {
+                        count++;
+                        winningCells.push([r, c]);
+                    } else break;
+                }
+                
+                // Check negative direction
+                for (let i = 1; i < 4; i++) {
+                    const r = row - dr * i;
+                    const c = col - dc * i;
+                    if (r >= 0 && r < ROWS && c >= 0 && c < COLS && board[r][c] === player) {
+                        count++;
+                        winningCells.push([r, c]);
+                    } else break;
+                }
+                
+                if (count >= 4) {
+                    // Highlight winning cells
+                    winningCells.forEach(([r, c]) => {
+                        const index = r * COLS + c;
+                        document.querySelectorAll('.cell')[index].classList.add('winning');
+                    });
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
+        function checkDraw() {
+            return board[0].every(cell => cell !== null);
+        }
+
+        function gameOver(result) {
+            gameActive = false;
+            
+            const modal = document.getElementById('game-over');
+            const resultText = document.getElementById('game-result');
+            
+            modal.className = 'game-over-modal show ' + result;
+            
+            if (result === 'win') {
+                resultText.textContent = '🎉 You Win!';
+                stats.wins++;
+            } else if (result === 'lose') {
+                resultText.textContent = '😔 AI Wins!';
+                stats.losses++;
+            } else {
+                resultText.textContent = '🤝 Draw!';
+                stats.draws++;
+            }
+            
+            saveStats();
+            updateStatsDisplay();
+            
+            // Submit score
+            if (window.parent !== window) {
+                const total = stats.wins + stats.losses + stats.draws;
+                const winRate = total > 0 ? Math.round((stats.wins / total) * 100) : 0;
+                window.parent.postMessage({
+                    type: 'gameScore',
+                    gameId: 'connectFour',
+                    score: winRate,
+                    stats: stats
+                }, '*');
+            }
+        }
+
+        function updateTurnDisplay() {
+            const dot = document.getElementById('turn-dot');
+            const text = document.getElementById('turn-text');
+            
+            dot.className = 'turn-dot ' + currentPlayer;
+            text.textContent = currentPlayer === 'red' ? 'Your Turn (Red)' : 'AI Thinking...';
+        }
+
+        function updateStatsDisplay() {
+            document.getElementById('wins').textContent = stats.wins;
+            document.getElementById('losses').textContent = stats.losses;
+            document.getElementById('draws').textContent = stats.draws;
+            
+            const total = stats.wins + stats.losses + stats.draws;
+            const winRate = total > 0 ? Math.round((stats.wins / total) * 100) : 0;
+            document.getElementById('win-rate').textContent = `Win Rate: ${winRate}%`;
+        }
+
+        function loadStats() {
+            const saved = localStorage.getItem('connectfour_stats');
+            if (saved) {
+                stats = JSON.parse(saved);
+                updateStatsDisplay();
+            }
+        }
+
+        function saveStats() {
+            localStorage.setItem('connectfour_stats', JSON.stringify(stats));
+        }
+
+        function resetStats() {
+            stats = { wins: 0, losses: 0, draws: 0 };
+            saveStats();
+            updateStatsDisplay();
+        }
+
+        function restartGame() {
+            initGame();
+        }
+
+        // Difficulty selector
+        document.querySelectorAll('.diff-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                difficulty = btn.dataset.diff;
+                restartGame();
+            });
+        });
+
+        // Initialize
+        initGame();
+    </script>
+</body>
+</html>

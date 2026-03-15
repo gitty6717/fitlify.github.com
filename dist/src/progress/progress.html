@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Analytics - FITLIFY</title>
+    <link rel="stylesheet" href="progress.css">
+    <link rel="stylesheet" href="../src/shared/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="nav-logo">
+                    <h1><a href="../src/index.html" style="text-decoration: none; color: inherit;">FITLIFY</a></h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="../src/dashboard/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../src/profile/profile.html" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="progress-main">
+        <div class="container">
+            <div class="progress-header">
+                <h2>Progress Analytics</h2>
+                <p>Track your fitness journey with detailed analytics and insights</p>
+            </div>
+
+            <!-- Time Period Selector -->
+            <div class="period-selector">
+                <div class="period-buttons">
+                    <button class="period-btn active" data-period="week">Week</button>
+                    <button class="period-btn" data-period="month">Month</button>
+                    <button class="period-btn" data-period="quarter">3 Months</button>
+                    <button class="period-btn" data-period="year">Year</button>
+                    <button class="period-btn" data-period="all">All Time</button>
+                </div>
+                <div class="date-range">
+                    <span id="date-range-display">Last 7 days</span>
+                </div>
+            </div>
+
+            <!-- Key Metrics Cards -->
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Workout Streak</h3>
+                        <div class="metric-icon">🔥</div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="workout-streak">7</span>
+                        <span class="metric-unit">days</span>
+                    </div>
+                    <div class="metric-change positive">
+                        <span>↑ 2 from last week</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Total Workouts</h3>
+                        <div class="metric-icon">💪</div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="total-workouts">24</span>
+                        <span class="metric-unit">sessions</span>
+                    </div>
+                    <div class="metric-change positive">
+                        <span>↑ 4 from last week</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Weight Change</h3>
+                        <div class="metric-icon">⚖️</div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="weight-change">-2.3</span>
+                        <span class="metric-unit">kg</span>
+                    </div>
+                    <div class="metric-change positive">
+                        <span>↓ 0.5kg this week</span>
+                    </div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Completion Rate</h3>
+                        <div class="metric-icon">✅</div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="completion-rate">85</span>
+                        <span class="metric-unit">%</span>
+                    </div>
+                    <div class="metric-change positive">
+                        <span>↑ 5% from last week</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Weight Progress</h3>
+                        <div class="chart-controls">
+                            <button class="chart-btn" id="weight-chart-type">Line</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="weight-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>Workout Frequency</h3>
+                        <div class="chart-controls">
+                            <button class="chart-btn" id="workout-chart-type">Bar</button>
+                        </div>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="workout-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Progress -->
+            <div class="detailed-progress">
+                <div class="progress-tabs">
+                    <button class="tab-btn active" data-tab="body-metrics">Body Metrics</button>
+                    <button class="tab-btn" data-tab="workout-history">Workout History</button>
+                    <button class="tab-btn" data-tab="achievements">Achievements</button>
+                    <button class="tab-btn" data-tab="insights">AI Insights</button>
+                </div>
+
+                <div class="tab-content">
+                    <!-- Body Metrics Tab -->
+                    <div class="tab-pane active" id="body-metrics">
+                        <div class="metrics-table">
+                            <div class="table-header">
+                                <h4>Body Composition Tracking</h4>
+                                <button class="add-metric-btn">+ Log Measurement</button>
+                            </div>
+                            <div class="table-wrapper">
+                                <table class="metrics-table-content">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Weight (kg)</th>
+                                            <th>Body Fat %</th>
+                                            <th>Muscle Mass</th>
+                                            <th>Notes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="body-metrics-tbody">
+                                        <!-- Data will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Workout History Tab -->
+                    <div class="tab-pane" id="workout-history">
+                        <div class="workout-history-list">
+                            <div class="history-header">
+                                <h4>Recent Workouts</h4>
+                                <div class="filter-options">
+                                    <select id="workout-filter">
+                                        <option value="all">All Workouts</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="missed">Missed</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="history-list" id="workout-history-list">
+                                <!-- Workout history items will be populated here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievements Tab -->
+                    <div class="tab-pane" id="achievements">
+                        <div class="achievements-grid">
+                            <div class="achievement-card unlocked">
+                                <div class="achievement-icon">🏃</div>
+                                <h4>First Workout</h4>
+                                <p>Completed your first workout</p>
+                                <div class="achievement-date">Jan 1, 2024</div>
+                            </div>
+
+                            <div class="achievement-card unlocked">
+                                <div class="achievement-icon">🔥</div>
+                                <h4>Week Warrior</h4>
+                                <p>7-day workout streak</p>
+                                <div class="achievement-date">Jan 7, 2024</div>
+                            </div>
+
+                            <div class="achievement-card locked">
+                                <div class="achievement-icon">💪</div>
+                                <h4>Month Master</h4>
+                                <p>30-day workout streak</p>
+                                <div class="achievement-progress">7/30 days</div>
+                            </div>
+
+                            <div class="achievement-card locked">
+                                <div class="achievement-icon">🎯</div>
+                                <h4>Goal Getter</h4>
+                                <p>Achieve your primary goal</p>
+                                <div class="achievement-progress">In Progress</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Insights Tab -->
+                    <div class="tab-pane" id="insights">
+                        <div class="insights-container">
+                            <div class="insight-card">
+                                <div class="insight-header">
+                                    <div class="insight-icon">📈</div>
+                                    <h4>Progress Trend</h4>
+                                </div>
+                                <div class="insight-content">
+                                    <p>Your weight loss has been consistent over the past month, averaging 0.5kg per week. This is a healthy and sustainable rate of progress.</p>
+                                    <div class="insight-action">
+                                        <button class="action-btn">View Details</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="insight-card">
+                                <div class="insight-header">
+                                    <div class="insight-icon">🎯</div>
+                                    <h4>Goal Alignment</h4>
+                                </div>
+                                <div class="insight-content">
+                                    <p>Your current workout frequency aligns perfectly with your fat loss goals. Consider adding 1-2 cardio sessions per week for optimal results.</p>
+                                    <div class="insight-action">
+                                        <button class="action-btn">Adjust Plan</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="insight-card">
+                                <div class="insight-header">
+                                    <div class="insight-icon">⚠️</div>
+                                    <h4>Recommendation</h4>
+                                </div>
+                                <div class="insight-content">
+                                    <p>We've noticed you've been missing lower body workouts. Consider scheduling them earlier in the week when energy levels are higher.</p>
+                                    <div class="insight-action">
+                                        <button class="action-btn">Reschedule</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Export Options -->
+            <div class="export-section">
+                <div class="export-header">
+                    <h3>Export Your Data</h3>
+                    <p>Download your progress data for personal records or sharing with trainers</p>
+                </div>
+                <div class="export-options">
+                    <button class="export-btn" data-format="pdf">
+                        📄 Export as PDF
+                    </button>
+                    <button class="export-btn" data-format="csv">
+                        📊 Export as CSV
+                    </button>
+                    <button class="export-btn" data-format="json">
+                        💾 Export as JSON
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Measurement Modal -->
+    <div id="measurement-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Log Body Measurement</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="measurement-form">
+                    <div class="form-group">
+                        <label for="measurement-date">Date</label>
+                        <input type="date" id="measurement-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="measurement-weight">Weight (kg)</label>
+                        <input type="number" id="measurement-weight" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="measurement-body-fat">Body Fat %</label>
+                        <input type="number" id="measurement-body-fat" step="0.1" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="measurement-muscle">Muscle Mass (kg)</label>
+                        <input type="number" id="measurement-muscle" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="measurement-notes">Notes</label>
+                        <textarea id="measurement-notes" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" form="measurement-form" class="btn-primary">Save Measurement</button>
+                <button class="btn-secondary modal-close">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <span class="notification-icon">✓</span>
+            <span class="notification-message">Progress saved successfully!</span>
+        </div>
+    </div>
+
+    <script src="progress.js"></script>
+    <script src="../src/shared/navigation.js"></script>
+</body>
+</html>

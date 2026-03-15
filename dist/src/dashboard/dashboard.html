@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Fitlify</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="../src/shared/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="nav-logo">
+                    <h1><a href="../src/index.html" style="text-decoration: none; color: inherit;">FITLIFY</a></h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="../src/form/form.html" class="nav-link">Create Workout Plan</a>
+                <a href="../src/profile/profile.html" class="nav-link">View Profile</a>
+                <button id="logout-btn" class="nav-link logout-btn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-card">
+                    <div class="welcome-content">
+                        <div class="user-avatar" id="user-avatar">
+                            <img id="user-picture" src="" alt="User Avatar" style="display: none;">
+                            <span id="user-initial">U</span>
+                        </div>
+                        <div class="welcome-text">
+                            <h2 id="welcome-message">Welcome back!</h2>
+                            <p id="welcome-subtitle">Ready to continue your fitness journey?</p>
+                        </div>
+                    </div>
+                    <div class="quick-stats">
+                        <div class="stat-item">
+                            <span class="stat-number" id="total-workouts">0</span>
+                            <span class="stat-label">Workouts</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="current-streak">0</span>
+                            <span class="stat-label">Day Streak</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number" id="total-plans">0</span>
+                            <span class="stat-label">Plans Created</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="actions-section">
+                <h3 class="section-title">Quick Actions</h3>
+                <div class="actions-grid">
+                    <div class="action-card" onclick="window.location.href='../src/form/form.html'">
+                        <div class="action-icon">💪</div>
+                        <h4>Create Workout Plan</h4>
+                        <p>Generate a personalized AI workout plan based on your goals</p>
+                    </div>
+                    <div class="action-card" onclick="window.location.href='../src/plan/plan.html'">
+                        <div class="action-icon">📋</div>
+                        <h4>View Current Plan</h4>
+                        <p>Check your existing workout plan and progress</p>
+                    </div>
+                    <div class="action-card" onclick="window.location.href='../src/profile/profile.html'">
+                        <div class="action-icon">👤</div>
+                        <h4>Update Profile</h4>
+                        <p>Edit your fitness data and preferences</p>
+                    </div>
+                    <div class="action-card" onclick="showProgressModal()">
+                        <div class="action-icon">📊</div>
+                        <h4>View Progress</h4>
+                        <p>Track your fitness journey with detailed analytics</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Activity -->
+            <section class="activity-section">
+                <h3 class="section-title">Recent Activity</h3>
+                <div class="activity-card">
+                    <div class="activity-header">
+                        <h4>Your Latest Workout Plans</h4>
+                        <button class="btn btn-sm" onclick="window.location.href='../src/form/form.html'">Create New Plan</button>
+                    </div>
+                    <div id="recent-plans" class="plans-list">
+                        <div class="empty-state">
+                            <div class="empty-icon">📝</div>
+                            <p>No workout plans yet. Create your first plan to get started!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fitness Tips -->
+            <section class="tips-section">
+                <h3 class="section-title">Fitness Tips</h3>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">💧</div>
+                        <h4>Stay Hydrated</h4>
+                        <p>Drink at least 8 glasses of water daily for optimal performance and recovery.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">😴</div>
+                        <h4>Recovery Matters</h4>
+                        <p>Get 7-9 hours of quality sleep to maximize muscle growth and repair.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🥗</div>
+                        <h4>Progressive Overload</h4>
+                        <p>Gradually increase weight, reps, or intensity to keep making progress.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🎯</div>
+                        <h4>Set Realistic Goals</h4>
+                        <p>Break big goals into smaller, achievable milestones for consistent progress.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Progress Modal -->
+    <div id="progress-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Your Progress</h3>
+                <button class="modal-close" onclick="closeProgressModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="progress-stats">
+                    <div class="progress-item">
+                        <span class="progress-label">Total Workouts</span>
+                        <span class="progress-value" id="modal-total-workouts">0</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Current Streak</span>
+                        <span class="progress-value" id="modal-current-streak">0</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Best Streak</span>
+                        <span class="progress-value" id="modal-best-streak">0</span>
+                    </div>
+                    <div class="progress-item">
+                        <span class="progress-label">Member Since</span>
+                        <span class="progress-value" id="modal-member-since">-</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Fitlify. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="dashboard.js"></script>
+    <script src="../src/shared/navigation.js"></script>
+</body>
+</html>

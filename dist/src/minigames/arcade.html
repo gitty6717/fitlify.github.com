@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcade Zone - FITLIFY</title>
+    <link rel="stylesheet" href="arcade.css">
+    <link rel="stylesheet" href="../src/shared/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="nav-logo">
+                    <h1><a href="../src/index.html">FITLIFY</a></h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="../src/dashboard/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../src/profile/profile.html" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hamburger Menu Sidebar -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Menu</h2>
+            <button class="sidebar-close" id="sidebar-close">&times;</button>
+        </div>
+        <div class="sidebar-content">
+            <nav class="sidebar-nav">
+                <a href="../src/index.html" class="sidebar-link">
+                    <span class="sidebar-icon">🏠</span>
+                    <span>Home</span>
+                </a>
+                <a href="../src/dashboard/dashboard.html" class="sidebar-link">
+                    <span class="sidebar-icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="../src/profile/profile.html" class="sidebar-link">
+                    <span class="sidebar-icon">👤</span>
+                    <span>Profile</span>
+                </a>
+                <a href="../src/progress/progress.html" class="sidebar-link">
+                    <span class="sidebar-icon">📈</span>
+                    <span>Progress</span>
+                </a>
+                <a href="../src/exercise_selector/exercise_selector.html" class="sidebar-link">
+                    <span class="sidebar-icon">🏋️</span>
+                    <span>Exercises</span>
+                </a>
+                <a href="../src/goal_selector/goal_selector.html" class="sidebar-link">
+                    <span class="sidebar-icon">🎯</span>
+                    <span>Goals</span>
+                </a>
+                <a href="../src/coach_chat/coach_chat.html" class="sidebar-link">
+                    <span class="sidebar-icon">🤖</span>
+                    <span>AI Coach</span>
+                </a>
+                <a href="minigames.html" class="sidebar-link">
+                    <span class="sidebar-icon">🎮</span>
+                    <span>Featured Games</span>
+                </a>
+                <a href="arcade.html" class="sidebar-link active">
+                    <span class="sidebar-icon">🕹️</span>
+                    <span>Arcade Zone</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="games-main">
+        <div class="container">
+            <!-- Header Section -->
+            <div class="games-header">
+                <h2>Minigames Arcade</h2>
+                <p>Complete your daily fitness goals to unlock fun minigames!</p>
+            </div>
+
+            <!-- Daily Progress -->
+            <div class="daily-progress-card">
+                <div class="progress-header">
+                    <h3>Today's Progress</h3>
+                    <span class="progress-status" id="progress-status">🔒 Complete workout to unlock</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="daily-progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">0% Complete</div>
+                </div>
+                <div class="workout-info" id="workout-info">
+                    <p>Complete your daily workout to unlock minigames!</p>
+                </div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🎮</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="unlocked-count">0</span>
+                        <span class="stat-label">Unlocked</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🔒</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="locked-count">500</span>
+                        <span class="stat-label">Locked</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="high-score">0</span>
+                        <span class="stat-label">Best Score</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="total-played">0</span>
+                        <span class="stat-label">Games Played</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="games-filters">
+                <div class="filter-group">
+                    <label>Show:</label>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-filter="all">All Games</button>
+                        <button class="filter-btn" data-filter="unlocked">🔓 Unlocked</button>
+                        <button class="filter-btn" data-filter="locked">🔒 Locked</button>
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>Category:</label>
+                    <select class="category-select" id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="reaction">⚡ Reaction</option>
+                        <option value="memory">🧠 Memory</option>
+                        <option value="puzzle">🧩 Puzzle</option>
+                        <option value="reflex">👆 Reflex</option>
+                        <option value="pattern">📊 Pattern</option>
+                        <option value="strategy">♟️ Strategy</option>
+                        <option value="arcade">👾 Arcade</option>
+                    </select>
+                </div>
+                <div class="search-container">
+                    <input type="text" class="search-input" id="game-search" placeholder="Search games...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+
+            <!-- Games Grid -->
+            <div class="games-grid" id="games-grid">
+                <!-- Games will be populated by JavaScript -->
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>Loading minigames...</p>
+                </div>
+            </div>
+
+            <!-- Load More -->
+            <div class="load-more-section">
+                <button class="load-more-btn" id="load-more-btn">Load More Games</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Game Modal -->
+    <div class="game-modal" id="game-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="game-title">Game Title</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="game-container" id="game-container">
+                    <!-- Game will be rendered here -->
+                </div>
+                <div class="game-instructions" id="game-instructions">
+                    <h4>How to Play</h4>
+                    <p id="game-description"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="game-stats">
+                    <span class="stat">Score: <strong id="current-score">0</strong></span>
+                    <span class="stat">High Score: <strong id="high-score-display">0</strong></span>
+                </div>
+                <button class="btn-primary" id="start-game-btn">Start Game</button>
+                <button class="btn-secondary" id="reset-game-btn">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Locked Game Modal -->
+    <div class="locked-modal" id="locked-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🔒 Game Locked</h3>
+                <button class="modal-close" id="locked-modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="locked-content">
+                    <div class="locked-icon">🔒</div>
+                    <p>This minigame is locked. Complete your daily fitness goal to unlock it!</p>
+                    <div class="unlock-requirements">
+                        <h4>Requirements:</h4>
+                        <ul>
+                            <li>Complete today's workout plan</li>
+                            <li>Log your workout in the dashboard</li>
+                            <li>Come back to play!</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="../src/dashboard/dashboard.html" class="btn-primary">Go to Dashboard</a>
+                <button class="btn-secondary" id="close-locked-btn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <div class="notification-content">
+            <span class="notification-icon">🎉</span>
+            <span class="notification-message">New game unlocked!</span>
+        </div>
+    </div>
+
+    <script src="arcade.js"></script>
+    <script src="../src/shared/navigation.js"></script>
+</body>
+</html>
