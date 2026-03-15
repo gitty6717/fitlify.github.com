@@ -1,0 +1,103 @@
+{
+  "name": "fitlify",
+  "version": "1.0.1",
+  "description": "Fitlify - Your Personal Fitness Companion",
+  "main": "main.js",
+  "author": "Fitlify",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "server": "node server/server.js",
+    "dev": "concurrently \"npm run server\" \"npm start\"",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "build:win": "electron-builder --win",
+    "build:portable": "electron-builder --win portable"
+  },
+  "build": {
+    "appId": "com.fitlify.app",
+    "productName": "Fitlify",
+    "directories": {
+      "output": "../../",
+      "buildResources": "../build"
+    },
+    "files": [
+      "main.js",
+      "server/database.js",
+      "server/preload.js",
+      "server/updater.js",
+      "server/server.js",
+      "server/main.js",
+      "packages/package.json",
+      "home/**/*",
+      "login/**/*",
+      "signup/**/*",
+      "dashboard/**/*",
+      "profile/**/*",
+      "coach_chat/**/*",
+      "exercise_selector/**/*",
+      "goal_selector/**/*",
+      "form/**/*",
+      "plan/**/*",
+      "progress/**/*",
+      "minigames/**/*",
+      "shared/**/*",
+      "assets/**/*",
+      "database/**/*",
+      "backend/**/*",
+      "!node_modules/**/*",
+      "!.git/**/*",
+      "!dist/**/*",
+      "!build/**/*",
+      "!test-*.html",
+      "!**/*.bat",
+      "!**/guides/**/*"
+    ],
+    "publish": {
+      "provider": "github",
+      "owner": "gitty6717",
+      "repo": "fitlify.github.com"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        },
+        {
+          "target": "portable",
+          "arch": ["x64"]
+        }
+      ],
+      "publisherName": "Fitlify",
+      "verifyUpdateCodeSignature": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Fitlify",
+      "artifactName": "Fitlify-Setup-${version}.exe"
+    },
+    "portable": {
+      "artifactName": "Fitlify-Portable-${version}.exe"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "electron-updater": "^6.1.7",
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
