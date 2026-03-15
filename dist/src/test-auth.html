@@ -85,7 +85,7 @@
             try {
                 resultDiv.innerHTML = 'Testing login...';
                 
-                const response = await fetch('http://localhost:3001/api/login', {
+                const response = await fetch('http://localhost:3002/api/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -115,7 +115,7 @@
             try {
                 resultDiv.innerHTML = 'Testing signup...';
                 
-                const response = await fetch('http://localhost:3001/api/signup', {
+                const response = await fetch('http://localhost:3002/api/signup', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -142,7 +142,7 @@
             try {
                 resultDiv.innerHTML = 'Checking server...';
                 
-                const response = await fetch('http://localhost:3001/api/health');
+                const response = await fetch('http://localhost:3002/api/health');
                 const result = await response.json();
                 
                 resultDiv.innerHTML = `<div class="success">✅ Server is running!</div>

@@ -178,17 +178,17 @@ app.get('/api/users', async (req, res) => {
 app.get('/api/health', (req, res) => {
     res.json({
         status: 'Server is running',
-        database: fs.existsSync(DB_PATH) ? 'MS Access DB found' : 'Using JSON fallback',
+        database: fs.existsSync(db.dbPath) ? 'JSON database found' : 'Database not found',
         timestamp: new Date().toISOString()
     });
 });
 
 // Initialize and start server
-initializeDatabase();
+db.initializeDatabase();
 
 app.listen(PORT, () => {
     console.log(`Fitlify API Server running on http://localhost:${PORT}`);
-    console.log('Database:', fs.existsSync(DB_PATH) ? 'MS Access' : 'JSON fallback');
+    console.log('Database:', fs.existsSync(db.dbPath) ? 'JSON database' : 'Database not found');
 });
 
 // Handle graceful shutdown
