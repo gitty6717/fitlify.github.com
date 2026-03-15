@@ -21,8 +21,8 @@ function createWindow() {
     mainWindow.loadFile('dist/src/login/login.html');
     mainWindow.webContents.openDevTools();
   } else {
-    // Load from GitHub Pages for production
-    mainWindow.loadURL('https://gitty6717.github.io/fitlify.github.com/dist/src/login/login.html');
+    // Load from local installed files in production
+    mainWindow.loadFile('dist/src/login/login.html');
   }
 
   mainWindow.on('closed', () => {

@@ -29,9 +29,9 @@ const API_BASE = 'http://localhost:3002/api';
 // Base URL for navigation
 const getBaseUrl = () => {
     if (window.location.protocol === 'file:') {
-        return 'https://gitty6717.github.io/fitlify.github.com/dist/src';
+        return '../src'; // Local installed files
     } else {
-        return '../src';
+        return '../src'; // Development mode
     }
 };
 

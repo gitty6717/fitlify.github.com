@@ -13,7 +13,7 @@ class NavigationHandler {
     getBaseUrl() {
         // Check if we're running in production (installed app) vs development
         if (window.location.protocol === 'file:') {
-            return 'https://gitty6717.github.io/fitlify.github.com/dist/src';
+            return '../src'; // Local installed files
         } else {
             return '../src'; // Development mode
         }
