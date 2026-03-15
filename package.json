@@ -21,6 +21,7 @@
       "output": "../../",
       "buildResources": "../build"
     },
+    "icon": "assets/icon.ico",
     "files": [
       "main.js",
       "server/database.js",
@@ -65,6 +66,12 @@
           "arch": [
             "x64",
             "ia32"
+          ]
+        },
+        {
+          "target": "dir",
+          "arch": [
+            "x64"
           ]
         },
         {
