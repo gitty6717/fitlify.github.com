@@ -2,7 +2,11 @@
 class UpdateNotificationManager {
     constructor() {
         this.lastVersion = localStorage.getItem('fitlify_last_version') || '1.0.0';
+<<<<<<< Updated upstream
         this.currentVersion = '2.14.0';
+=======
+        this.currentVersion = '2.3.0';
+>>>>>>> Stashed changes
         this.hasShownWhatsNew = localStorage.getItem('fitlify_whats_new_shown') === 'true';
         
         // Force version update for testing

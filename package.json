@@ -1,6 +1,10 @@
 {
   "name": "fitlify",
+<<<<<<< Updated upstream
   "version": "2.14.0",
+=======
+  "version": "2.3.0",
+>>>>>>> Stashed changes
   "description": "Fitlify - Your Personal Fitness Companion",
   "main": "main.js",
   "author": "Fitlify",
