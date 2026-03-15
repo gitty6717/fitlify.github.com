@@ -21,6 +21,7 @@
       "output": "../../",
       "buildResources": "../build"
     },
+    "icon": "assets/fitlify-muscular-512.png",
     "files": [
       "main.js",
       "server/database.js",
