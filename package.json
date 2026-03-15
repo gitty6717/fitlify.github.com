@@ -21,7 +21,7 @@
       "output": "../../",
       "buildResources": "../build"
     },
-    "icon": "assets/icon.ico",
+    "icon": "assets/fitlify-icon-512.png",
     "files": [
       "main.js",
       "server/database.js",
