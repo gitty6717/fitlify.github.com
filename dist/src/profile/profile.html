@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Fitlify</title>
+    <link rel="stylesheet" href="profile.css">
+    <link rel="stylesheet" href="../src/shared/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="nav-logo">
+                    <h1><a href="../src/index.html" style="text-decoration: none; color: inherit;">FITLIFY</a></h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="../src/dashboard/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../src/form/form.html" class="nav-link">Edit Data</a>
+                <button id="logout-btn" class="nav-link logout-btn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="profile-main">
+        <div class="container">
+            <!-- Profile Header -->
+            <section class="profile-header">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <img id="user-picture" src="" alt="User Avatar" style="display: none;">
+                        <span id="user-initial">U</span>
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="user-name">User Name</h2>
+                        <p id="user-email">user@example.com</p>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <span class="stat-number" id="member-days">0</span>
+                                <span class="stat-label">Days Active</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="total-plans">0</span>
+                                <span class="stat-label">Plans Created</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-number" id="current-streak">0</span>
+                                <span class="stat-label">Day Streak</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Fitness Data -->
+            <section class="fitness-data-section">
+                <div class="section-header">
+                    <h3>Fitness Data</h3>
+                    <button id="edit-data-btn" class="btn btn-secondary">Edit Data</button>
+                </div>
+                <div class="data-card">
+                    <div class="data-grid">
+                        <div class="data-item">
+                            <span class="data-label">Age</span>
+                            <span class="data-value" id="profile-age">-</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Height</span>
+                            <span class="data-value" id="profile-height">-</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Weight</span>
+                            <span class="data-value" id="profile-weight">-</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Fitness Level</span>
+                            <span class="data-value" id="profile-fitness-level">-</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Goal</span>
+                            <span class="data-value" id="profile-goal">-</span>
+                        </div>
+                        <div class="data-item">
+                            <span class="data-label">Workout Days</span>
+                            <span class="data-value" id="profile-workout-days">-</span>
+                        </div>
+                    </div>
+                    <div class="data-notes">
+                        <h4>Injuries & Limitations</h4>
+                        <p id="profile-injuries">No injuries or limitations reported.</p>
+                    </div>
+                    <div class="data-notes">
+                        <h4>Additional Notes</h4>
+                        <p id="profile-notes">No additional notes provided.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent Workout Plans -->
+            <section class="plans-section">
+                <div class="section-header">
+                    <h3>Recent Workout Plans</h3>
+                    <button id="regenerate-btn" class="btn btn-primary">Regenerate Plan</button>
+                </div>
+                <div class="plans-container" id="plans-container">
+                    <div class="loading-state">
+                        <div class="loading-spinner"></div>
+                        <p>Loading workout plans...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Game Settings -->
+            <section class="settings-section game-settings-section">
+                <h3>🎮 Game Settings</h3>
+                <div class="settings-grid">
+                    <div class="setting-card">
+                        <h4>🎯 Featured Games</h4>
+                        <p>Play 10 premium minigames unlocked by your fitness achievements.</p>
+                        <a href="../src/minigames/minigames.html" class="btn btn-secondary">Play Featured Games</a>
+                    </div>
+                    <div class="setting-card">
+                        <h4>🕹️ Arcade Zone</h4>
+                        <p>500+ quick mini-games available anytime for instant fun.</p>
+                        <a href="../src/minigames/arcade.html" class="btn btn-secondary">Enter Arcade</a>
+                    </div>
+                    <div class="setting-card">
+                        <h4>🏆 Leaderboards</h4>
+                        <p>View global rankings and your position on the leaderboards.</p>
+                        <a href="../src/minigames/leaderboards.html" class="btn btn-secondary">View Leaderboards</a>
+                    </div>
+                    <div class="setting-card">
+                        <h4>📊 Your Game Stats</h4>
+                        <p id="game-stats-preview">Games Played: 0 | High Score: 0</p>
+                        <button id="reset-game-stats-btn" class="btn btn-danger btn-small">Reset Stats</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Account Settings -->
+            <section class="settings-section">
+                <h3>Account Settings</h3>
+                <div class="settings-grid">
+                    <div class="setting-card">
+                        <h4>Change Password</h4>
+                        <p>Update your account password for security.</p>
+                        <button id="change-password-btn" class="btn btn-secondary">Change Password</button>
+                    </div>
+                    <div class="setting-card">
+                        <h4>Export Data</h4>
+                        <p>Download all your fitness data and workout plans.</p>
+                        <button id="export-data-btn" class="btn btn-secondary">Export Data</button>
+                    </div>
+                    <div class="setting-card">
+                        <h4>Delete Account</h4>
+                        <p>Permanently delete your account and all data.</p>
+                        <button id="delete-account-btn" class="btn btn-danger">Delete Account</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Edit Data Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Fitness Data</h3>
+                <button class="modal-close" onclick="closeEditModal()">&times;</button>
+            </div>
+            <form id="edit-form" class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="edit-age">Age</label>
+                        <input type="number" id="edit-age" min="13" max="100" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-height">Height (cm)</label>
+                        <input type="number" id="edit-height" min="100" max="250" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-weight">Weight (kg)</label>
+                        <input type="number" id="edit-weight" min="30" max="300" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-fitness-level">Fitness Level</label>
+                        <select id="edit-fitness-level" required>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-goal">Primary Goal</label>
+                        <select id="edit-goal" required>
+                            <option value="lose_fat">Lose Fat</option>
+                            <option value="gain_muscle">Gain Muscle</option>
+                            <option value="maintain">Maintain</option>
+                            <option value="endurance">Endurance</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-workout-days">Workout Days per Week</label>
+                        <select id="edit-workout-days" required>
+                            <option value="2">2 days</option>
+                            <option value="3">3 days</option>
+                            <option value="4">4 days</option>
+                            <option value="5">5 days</option>
+                            <option value="6">6 days</option>
+                            <option value="7">7 days</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-injuries">Injuries or Limitations</label>
+                    <textarea id="edit-injuries" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-notes">Additional Notes</label>
+                    <textarea id="edit-notes" rows="3"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Fitlify. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="profile.js"></script>
+    <script src="../src/shared/navigation.js"></script>
+</body>
+</html>

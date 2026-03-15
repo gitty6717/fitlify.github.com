@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minigame Hub - FITLIFY</title>
+    <link rel="stylesheet" href="minigames.css">
+    <link rel="stylesheet" href="../src/shared/navigation.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="hamburger-menu" id="hamburger-menu" aria-label="Open navigation menu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
+                <div class="nav-logo">
+                    <h1><a href="../src/index.html">FITLIFY</a></h1>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="../src/dashboard/dashboard.html" class="nav-link">Dashboard</a>
+                <a href="../src/profile/profile.html" class="nav-link">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="minigames-main">
+        <!-- Header Section -->
+        <section class="hub-header">
+            <div class="container">
+                <h1 class="hub-title">🏆 Reward Minigames</h1>
+                <p class="hub-subtitle">Play relaxing games unlocked by your fitness achievements</p>
+                
+                <!-- Achievement Progress -->
+                <div class="achievement-progress">
+                    <div class="progress-card">
+                        <div class="progress-icon">🏋️</div>
+                        <div class="progress-info">
+                            <span class="progress-label">Workouts Completed</span>
+                            <span class="progress-value" id="workout-count">0</span>
+                        </div>
+                    </div>
+                    <div class="progress-card">
+                        <div class="progress-icon">🔥</div>
+                        <div class="progress-info">
+                            <span class="progress-label">Day Streak</span>
+                            <span class="progress-value" id="streak-count">0</span>
+                        </div>
+                    </div>
+                    <div class="progress-card">
+                        <div class="progress-icon">🎮</div>
+                        <div class="progress-info">
+                            <span class="progress-label">Games Unlocked</span>
+                            <span class="progress-value" id="unlocked-count">0/10</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Games Grid -->
+        <section class="games-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>🎯 Featured Games</h2>
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" data-view="grid">⊞ Grid</button>
+                        <button class="toggle-btn" data-view="list">☰ List</button>
+                    </div>
+                </div>
+
+                <div class="games-grid" id="games-grid">
+                    <!-- Games will be dynamically rendered here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Arcade Section - 500 Quick Games -->
+        <section class="games-section arcade-section">
+            <div class="container">
+                <div class="section-header">
+                    <div>
+                        <h2>🕹️ Arcade Zone</h2>
+                        <p style="color: var(--text-muted); margin-top: 0.25rem;">500+ quick mini-games for instant fun</p>
+                    </div>
+                    <a href="arcade.html" class="view-all-btn">Enter Arcade →</a>
+                </div>
+                
+                <div class="arcade-preview">
+                    <div class="arcade-card">
+                        <div class="arcade-icon">⚡</div>
+                        <h3>Quick Play</h3>
+                        <p>500 simple games you can play instantly</p>
+                    </div>
+                    <div class="arcade-card">
+                        <div class="arcade-icon">🎯</div>
+                        <h3>Categories</h3>
+                        <p>Reaction, Memory, Puzzle, Reflex & more</p>
+                    </div>
+                    <div class="arcade-card">
+                        <div class="arcade-icon">🔓</div>
+                        <h3>All Unlocked</h3>
+                        <p>Available anytime for quick breaks</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Global Leaderboards Preview -->
+        <section class="leaderboard-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>🏅 Global Leaderboards</h2>
+                    <a href="leaderboards.html" class="view-all-btn">View All →</a>
+                </div>
+                
+                <div class="leaderboard-preview" id="leaderboard-preview">
+                    <!-- Top players preview will be rendered here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Game Modal -->
+    <div class="game-modal" id="game-modal">
+        <div class="game-modal-content">
+            <div class="game-modal-header">
+                <h2 id="modal-game-title">Game Title</h2>
+                <div class="game-modal-actions">
+                    <button class="btn-leaderboard" id="view-leaderboard-btn">🏆 Leaderboard</button>
+                    <button class="btn-close" id="close-game-modal">&times;</button>
+                </div>
+            </div>
+            <div class="game-modal-body">
+                <div class="game-container" id="game-container">
+                    <!-- Game will be loaded here -->
+                </div>
+                <div class="game-sidebar">
+                    <div class="game-stats">
+                        <h3>Your Stats</h3>
+                        <div class="stat-item">
+                            <span class="stat-label">Best Score</span>
+                            <span class="stat-value" id="personal-best">-</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Games Played</span>
+                            <span class="stat-value" id="games-played">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Global Rank</span>
+                            <span class="stat-value" id="global-rank">-</span>
+                        </div>
+                    </div>
+                    <div class="game-instructions" id="game-instructions">
+                        <!-- Instructions will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div class="leaderboard-modal" id="leaderboard-modal">
+        <div class="leaderboard-modal-content">
+            <div class="leaderboard-header">
+                <h2 id="leaderboard-game-title">Game Leaderboard</h2>
+                <div class="leaderboard-filters">
+                    <select id="time-filter">
+                        <option value="daily">📅 Daily</option>
+                        <option value="weekly">📆 Weekly</option>
+                        <option value="monthly">🗓️ Monthly</option>
+                        <option value="alltime" selected>🏆 All Time</option>
+                    </select>
+                </div>
+                <button class="btn-close" id="close-leaderboard">&times;</button>
+            </div>
+            <div class="leaderboard-body">
+                <div class="leaderboard-table-container">
+                    <table class="leaderboard-table" id="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Score</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-tbody">
+                            <!-- Leaderboard entries will be rendered here -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="user-rank-section" id="user-rank-section">
+                    <!-- Current user's rank will be shown here if not in top list -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Fitlify. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="minigames.js"></script>
+    <script src="../src/shared/navigation.js"></script>
+</body>
+</html>

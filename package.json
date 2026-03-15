@@ -67,6 +67,10 @@
         {
           "target": "portable",
           "arch": ["x64"]
+        },
+        {
+          "target": "zip",
+          "arch": ["x64"]
         }
       ],
       "publisherName": "Fitlify",

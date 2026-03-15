@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Scramble</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #0a0e1a;
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .game-title {
+            font-size: 2rem;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .game-info {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-box {
+            text-align: center;
+            padding: 0.5rem 1rem;
+            background: #141b2d;
+            border-radius: 10px;
+            border: 1px solid #334155;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .info-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .scrambled-word {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: 0.5rem;
+            color: #10b981;
+            background: #141b2d;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            border: 2px solid #334155;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .hint {
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        input[type="text"] {
+            padding: 1rem 1.5rem;
+            font-size: 1.25rem;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            background: #141b2d;
+            color: #f8fafc;
+            text-align: center;
+            text-transform: uppercase;
+            width: 300px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+        button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #10b981;
+            color: #0a0e1a;
+        }
+
+        .btn-primary:hover {
+            background: #34d399;
+        }
+
+        .btn-secondary {
+            background: #1e2538;
+            color: #f8fafc;
+            border: 2px solid #334155;
+        }
+
+        .btn-secondary:hover {
+            border-color: #10b981;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .feedback {
+            margin-top: 1rem;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feedback.show {
+            opacity: 1;
+        }
+
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+        }
+
+        .feedback.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .progress-bar {
+            width: 100%;
+            max-width: 400px;
+            height: 8px;
+            background: #141b2d;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        .game-over {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: #141b2d;
+            border: 2px solid #10b981;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            z-index: 100;
+            transition: transform 0.3s ease;
+            min-width: 350px;
+        }
+
+        .game-over.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .game-over h2 {
+            color: #10b981;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .final-score {
+            font-size: 1.25rem;
+            color: #94a3b8;
+            margin-bottom: 0.5rem;
+        }
+
+        .high-score {
+            color: #fbbf24;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-header">
+        <h1 class="game-title">📝 Word Scramble</h1>
+        <p style="color: #94a3b8; margin-bottom: 1rem;">Unscramble the fitness words!</p>
+        <div class="game-info">
+            <div class="info-box">
+                <div class="info-value" id="score">0</div>
+                <div class="info-label">Score</div>
+            </div>
+            <div class="info-box">
+                <div class="info-value" id="streak">0</div>
+                <div class="info-label">Streak</div>
+            </div>
+            <div class="info-box">
+                <div class="info-value" id="timer">60</div>
+                <div class="info-label">Time</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scrambled-word" id="scrambled">LOADING</div>
+    <div class="hint" id="hint">Hint: </div>
+
+    <div class="input-container">
+        <input type="text" id="guess-input" placeholder="Your guess" maxlength="15" autocomplete="off">
+    </div>
+
+    <div class="controls">
+        <button class="btn-primary" onclick="checkAnswer()">Submit</button>
+        <button class="btn-secondary" onclick="skipWord()">Skip (-50 pts)</button>
+        <button class="btn-secondary" onclick="showHint()">Hint (-30 pts)</button>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progress" style="width: 100%;"></div>
+    </div>
+
+    <div class="game-over" id="game-over">
+        <h2>🎉 Time's Up!</h2>
+        <div class="final-score">Final Score: <span id="final-score">0</span></div>
+        <div class="high-score" id="high-score"></div>
+        <button class="btn-primary" onclick="startGame()">Play Again</button>
+    </div>
+
+    <script>
+        // Fitness words to unscramble
+        const WORDS = [
+            { word: 'PROTEIN', hint: 'Muscle building nutrient' },
+            { word: 'CARDIO', hint: 'Heart pumping exercise' },
+            { word: 'STRENGTH', hint: 'Muscle power' },
+            { word: 'FLEXIBILITY', hint: 'Range of motion' },
+            { word: 'ENDURANCE', hint: 'Stamina and persistence' },
+            { word: 'HYDRATION', hint: 'Water intake' },
+            { word: 'NUTRITION', hint: 'Healthy eating' },
+            { word: 'RECOVERY', hint: 'Rest after workout' },
+            { word: 'CALORIES', hint: 'Energy units' },
+            { word: 'METABOLISM', hint: 'Body energy process' },
+            { word: 'DUMBBELL', hint: 'Weight equipment' },
+            { word: 'TREADMILL', hint: 'Running machine' },
+            { word: 'RESISTANCE', hint: 'Opposing force training' },
+            { word: 'BALANCE', hint: 'Stability' },
+            { word: 'AGILITY', hint: 'Quick movement' },
+            { word: 'STRETCHING', hint: 'Muscle lengthening' },
+            { word: 'MARATHON', hint: 'Long distance race' },
+            { word: 'SQUATS', hint: 'Leg exercise' },
+            { word: 'PUSHUPS', hint: 'Upper body exercise' },
+            { word: 'PLANK', hint: 'Core exercise' },
+            { word: 'YOGA', hint: 'Mind-body practice' },
+            { word: 'PILATES', hint: 'Core strength system' },
+            { word: 'AEROBICS', hint: 'Oxygen-using exercise' },
+            { word: 'ANAEROBIC', hint: 'High intensity exercise' },
+            { word: 'KETTLEBELL', hint: 'Ball-shaped weight' },
+            { word: 'BURPEES', hint: 'Full body exercise' },
+            { word: 'DEADLIFT', hint: 'Weight lifting move' },
+            { word: 'BENCHPRESS', hint: 'Chest exercise' },
+            { word: 'PULLUPS', hint: 'Upper body pull' },
+            { word: 'LUNGES', hint: 'Leg exercise' }
+        ];
+
+        let currentWord = null;
+        let score = 0;
+        let streak = 0;
+        let timeLeft = 60;
+        let timerInterval = null;
+        let usedWords = [];
+        let highScore = parseInt(localStorage.getItem('wordscramble_highscore') || '0');
+
+        function shuffleWord(word) {
+            const arr = word.split('');
+            let shuffled;
+            do {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                shuffled = arr.join('');
+            } while (shuffled === word);
+            return shuffled;
+        }
+
+        function nextWord() {
+            // Filter out used words
+            const available = WORDS.filter(w => !usedWords.includes(w.word));
+            
+            if (available.length === 0) {
+                usedWords = []; // Reset if all words used
+            }
+            
+            const pool = available.length > 0 ? available : WORDS;
+            currentWord = pool[Math.floor(Math.random() * pool.length)];
+            usedWords.push(currentWord.word);
+            
+            const scrambled = shuffleWord(currentWord.word);
+            document.getElementById('scrambled').textContent = scrambled;
+            document.getElementById('hint').textContent = 'Hint: ???';
+            document.getElementById('guess-input').value = '';
+            document.getElementById('guess-input').focus();
+        }
+
+        function checkAnswer() {
+            const guess = document.getElementById('guess-input').value.toUpperCase().trim();
+            
+            if (guess === currentWord.word) {
+                // Correct!
+                const timeBonus = Math.floor(timeLeft / 10);
+                const streakBonus = Math.min(streak * 10, 50);
+                const points = 100 + timeBonus + streakBonus;
+                
+                score += points;
+                streak++;
+                
+                showFeedback(`✓ Correct! +${points} points`, 'correct');
+                updateDisplay();
+                nextWord();
+            } else {
+                // Wrong
+                streak = 0;
+                score = Math.max(0, score - 25);
+                showFeedback('✗ Wrong! Try again', 'wrong');
+                updateDisplay();
+            }
+        }
+
+        function skipWord() {
+            score = Math.max(0, score - 50);
+            streak = 0;
+            showFeedback(`Skipped! Word was: ${currentWord.word}`, 'wrong');
+            updateDisplay();
+            nextWord();
+        }
+
+        function showHint() {
+            score = Math.max(0, score - 30);
+            document.getElementById('hint').textContent = `Hint: ${currentWord.hint}`;
+            updateDisplay();
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = `feedback ${type} show`;
+            
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 2000);
+        }
+
+        function updateDisplay() {
+            document.getElementById('score').textContent = score;
+            document.getElementById('streak').textContent = streak;
+            document.getElementById('timer').textContent = timeLeft;
+            
+            const progress = (timeLeft / 60) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+                
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            
+            const isHighScore = score > highScore;
+            if (isHighScore) {
+                highScore = score;
+                localStorage.setItem('wordscramble_highscore', highScore);
+            }
+            
+            document.getElementById('final-score').textContent = score;
+            document.getElementById('high-score').textContent = 
+                isHighScore ? '🏆 New High Score!' : `High Score: ${highScore}`;
+            document.getElementById('game-over').classList.add('show');
+            
+            // Submit score
+            if (window.parent !== window) {
+                window.parent.postMessage({
+                    type: 'gameScore',
+                    gameId: 'wordScramble',
+                    score: score
+                }, '*');
+            }
+        }
+
+        function startGame() {
+            score = 0;
+            streak = 0;
+            timeLeft = 60;
+            usedWords = [];
+            document.getElementById('game-over').classList.remove('show');
+            nextWord();
+            updateDisplay();
+            startTimer();
+        }
+
+        // Event listeners
+        document.getElementById('guess-input').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Initialize
+        startGame();
+    </script>
+</body>
+</html>
