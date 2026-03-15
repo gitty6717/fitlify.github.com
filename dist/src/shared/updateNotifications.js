@@ -4,6 +4,11 @@ class UpdateNotificationManager {
         this.lastVersion = localStorage.getItem('fitlify_last_version') || '1.0.0';
         this.currentVersion = '2.11.0';
         this.hasShownWhatsNew = localStorage.getItem('fitlify_whats_new_shown') === 'true';
+        
+        // Force version update for testing
+        localStorage.removeItem('fitlify_last_version');
+        localStorage.removeItem('fitlify_whats_new_shown');
+        
         this.init();
     }
 
