@@ -1,6 +1,6 @@
 {
   "name": "fitlify",
-  "version": "2.10.2",
+  "version": "2.10.3",
   "description": "Fitlify - Your Personal Fitness Companion",
   "main": "main.js",
   "author": "Fitlify",
@@ -76,12 +76,6 @@
         },
         {
           "target": "portable",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "zip",
           "arch": [
             "x64"
           ]
